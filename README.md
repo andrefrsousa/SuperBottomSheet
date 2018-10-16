@@ -39,7 +39,6 @@ class DemoBottomSheetFragment : superBottomSheetDialogFragment() {
     override fun getInnerFragment() = DemoInnerFragment.newInstance()
 
     override fun getInnerFragmentTag() = "DemoInnerFragment"
-
 }
 
 class DemoInnerFragment : Fragment() {
@@ -48,7 +47,6 @@ class DemoInnerFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_demo_inner, container, false)
     }
 
-    // Constructor
     companion object {
         internal fun newInstance() = DemoInnerFragment()
     }
@@ -57,8 +55,7 @@ class DemoInnerFragment : Fragment() {
   
 ## Customization
   
-The are a group of general bottom sheet properties that you can define.  
-This properties will be applied to all the superBottomSheet in your project.  
+The are a group of general properties that you can define. These properties will be applied to all the SuperBottomSheet in your project.  
 
 ```xml
 // The amount of DIM that will be applied to the background from 0 to 1.
@@ -86,7 +83,7 @@ This properties will be applied to all the superBottomSheet in your project.
 <attr name="superBottomSheet_peekHeight" format="dimension"/>
 ```
 
-If you and to specify properties for a single bottom sheet you can override some methods:
+If you want to specify properties for a single bottom sheet you can override some methods:
 
 ```kotlin
 fun getPeekHeight(): Int {
