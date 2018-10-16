@@ -4,7 +4,7 @@ Android native a bottom sheet for on steroids 💪
 ![](/raw/banner.png)
   
 ### Specs  
-[![Download](https://api.bintray.com/packages/aritraroy/maven/flashbar/images/download.svg)](https://bintray.com/aritraroy/maven/flashbar/_latestVersion) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14)  
+[![](https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg)](https://jitpack.io/#andrefrsousa/SuperBottomSheet) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14)  
   
   
 This library allows you to show bottom sheets in your app with the bonus of **animating the status bar** color and the **top rounded corners** as you scroll.   
@@ -14,12 +14,24 @@ It has been written **100% in Kotlin**. ❤️
 ## Download  
   
 This library is available in **jCenter** which is the default Maven repository used in Android Studio. You can also import this library from source as a module.  
+
+Add it in your root build.gradle at the end of repositories:
    
 ```groovy  
-dependencies {  
-	// other dependencies here 
-	implementation 'com.andrefrsousa.libraries.animated.bottomsheet:lib:{latest_version}'
- }  
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+	
+Add the dependency:
+
+```groovy 
+dependencies {
+    implementation 'com.github.andrefrsousa:SuperBottomSheet:Tag'
+}
 ```  
   
 ## Sample Project  
