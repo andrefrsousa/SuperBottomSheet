@@ -3,7 +3,7 @@ Android native a bottom sheet for on steroids 💪
 
 ![](/raw/banner.png)
   
-### Specs  
+## Specs  
 [![](https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg)](https://jitpack.io/#andrefrsousa/SuperBottomSheet) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14)  
   
   
@@ -35,11 +35,13 @@ dependencies {
 ```  
   
 ## Sample Project  
+
 We have a sample project in Kotlin that demonstrates the lib usages [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
 
 ![](/raw/example.gif)
   
 ## Usage  
+
 It is recommended to check the sample project to get a complete understanding of all the features offered by the library.  
 In order to create a bottom sheet in your project you need two this: a class that extends SuperBottomSheetFragment, and a inner fragment that will be loaded.
 
