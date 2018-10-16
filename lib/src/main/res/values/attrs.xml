@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="superBottomSheet_dim" format="float"/>
+    <attr name="superBottomSheet_backgroundColor" format="color"/>
+    <attr name="superBottomSheet_cornerRadius" format="dimension"/>
+    <attr name="superBottomSheet_alwaysExpanded" format="boolean"/>
+    <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean"/>
+    <attr name="superBottomSheet_cancelable" format="boolean"/>
+    <attr name="superBottomSheet_statusBarColor" format="color"/>
+    <attr name="superBottomSheet_peekHeight" format="dimension"/>
+
+</resources>

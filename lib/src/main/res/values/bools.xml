@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="super_bottom_sheet_isTablet">false</bool>
+    <bool name="super_bottom_sheet_isAlwaysExpanded">false</bool>
+    <bool name="super_bottom_sheet_cancelableOnTouchOutside">true</bool>
+    <bool name="super_bottom_sheet_cancelable">true</bool>
+</resources>

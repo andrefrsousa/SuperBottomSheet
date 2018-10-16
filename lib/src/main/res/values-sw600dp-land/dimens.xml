@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Bottom sheet-->
+    <dimen name="super_bottom_sheet_width">650dp</dimen>
+
+</resources>
