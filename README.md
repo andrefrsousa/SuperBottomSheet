@@ -4,7 +4,7 @@ Android native a bottom sheet for on steroids 💪
 ![](/raw/banner.png)
   
 ## Specs  
-[![](https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg)](https://jitpack.io/#andrefrsousa/SuperBottomSheet) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14)  
+[![](https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg)](https://jitpack.io/#andrefrsousa/SuperBottomSheet) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Build Status](https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master)](https://travis-ci.org/andrefrsousa/SuperBottomSheet)
   
   
 This library allows you to show bottom sheets in your app with the bonus of **animating the status bar** color and the **top rounded corners** as you scroll.   
