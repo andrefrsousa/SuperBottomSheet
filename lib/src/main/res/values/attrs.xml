@@ -4,6 +4,7 @@
     <attr name="superBottomSheet_dim" format="float"/>
     <attr name="superBottomSheet_backgroundColor" format="color"/>
     <attr name="superBottomSheet_cornerRadius" format="dimension"/>
+    <attr name="superBottomSheet_animateCornerRadius" format="float"/>
     <attr name="superBottomSheet_alwaysExpanded" format="boolean"/>
     <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean"/>
     <attr name="superBottomSheet_cancelable" format="boolean"/>

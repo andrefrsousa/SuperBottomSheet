@@ -81,6 +81,9 @@ The are a group of general properties that you can define. These properties will
 // To radius to be applied to the bottom sheet. 0 if you want none.
 <attr name="superBottomSheet_cornerRadius" format="dimension"/>  
 
+// Enable or disable the radius animation. Default is true.
+<attr name="superBottomSheet_animateCornerRadius" format="float"/>
+
 // Default if false, if you want to skip collapse state
 <attr name="superBottomSheet_alwaysExpanded" format="boolean"/>
 
@@ -131,6 +134,11 @@ fun isSheetCancelableOnTouchOutside(): Boolean {
 fun isSheetCancelable(): Boolean {
     // Your code goes here
 }
+
+fun animateCornerRadius(): Boolean {
+    // Your code goes here
+}
+
 ```
 
 ## Spread Some :heart:  

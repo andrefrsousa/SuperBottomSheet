@@ -1,5 +1,25 @@
 /*
- * Copyright (c) 2018 André Sousa.
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 André Sousa
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 package com.andrefrsousa.superbottomsheet
 
@@ -37,6 +57,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     private var propertyIsAlwaysExpanded = false
     private var propertyIsSheetCancelableOnTouchOutside = true
     private var propertyIsSheetCancelable = true
+    private var propertyAnimateCornerRadius = true
 
     // Bottom sheet properties
     private var backgroundOuterRadii = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
@@ -64,6 +85,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         propertyIsAlwaysExpanded = isSheetAlwaysExpanded()
         propertyIsSheetCancelable = isSheetCancelable()
         propertyIsSheetCancelableOnTouchOutside = isSheetCancelableOnTouchOutside()
+        propertyAnimateCornerRadius = animateCornerRadius()
 
         // Set dialog properties
         dialog.run {
@@ -162,7 +184,10 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                         // If the content sheet is expanded set the background and status bar properties
                         if (super_bottomsheet_content.height == touchOutsideView.height) {
                             setStatusBarColor(0f)
-                            setBackgroundShapeRadius(0f)
+
+                            if (propertyAnimateCornerRadius) {
+                                setBackgroundShapeRadius(0f)
+                            }
                         }
                     }
 
@@ -201,8 +226,10 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                 val dim = propertyDim - (propertyDim * slideOffset)
                 setStatusBarColor(dim)
 
-                val radius = propertyCornerRadius - (propertyCornerRadius * slideOffset)
-                setBackgroundShapeRadius(radius)
+                if (propertyAnimateCornerRadius) {
+                    val radius = propertyCornerRadius - (propertyCornerRadius * slideOffset)
+                    setBackgroundShapeRadius(radius)
+                }
             }
         })
     }
@@ -340,7 +367,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     open fun isSheetAlwaysExpanded(): Boolean {
         val boolId = context!!.getAttrId(R.attr.superBottomSheet_alwaysExpanded)
 
-        if (boolId == -1) {
+        if (boolId == INVALID_RESOURCE_ID) {
             return context!!.resources.getBoolean(R.bool.super_bottom_sheet_isAlwaysExpanded)
         }
 
@@ -350,21 +377,31 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     open fun isSheetCancelableOnTouchOutside(): Boolean {
         val boolId = context!!.getAttrId(R.attr.superBottomSheet_cancelableOnTouchOutside)
 
-        if (boolId == -1) {
+        if (boolId == INVALID_RESOURCE_ID) {
             return context!!.resources.getBoolean(R.bool.super_bottom_sheet_cancelableOnTouchOutside)
         }
 
-        return true
+        return resources.getBoolean(boolId)
     }
 
     open fun isSheetCancelable(): Boolean {
         val boolId = context!!.getAttrId(R.attr.superBottomSheet_cancelable)
 
-        if (boolId == -1) {
+        if (boolId == INVALID_RESOURCE_ID) {
             return context!!.resources.getBoolean(R.bool.super_bottom_sheet_cancelable)
         }
 
-        return true
+        return resources.getBoolean(boolId)
+    }
+
+    open fun animateCornerRadius(): Boolean {
+        val boolId = context!!.getAttrId(R.attr.superBottomSheet_animateCornerRadius)
+
+        if (boolId == INVALID_RESOURCE_ID) {
+            return context!!.resources.getBoolean(R.bool.super_bottom_sheet_animate_corner_radius)
+        }
+
+        return resources.getBoolean(boolId)
     }
 
     abstract fun getInnerFragment(): Fragment

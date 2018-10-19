@@ -4,4 +4,5 @@
     <bool name="super_bottom_sheet_isAlwaysExpanded">false</bool>
     <bool name="super_bottom_sheet_cancelableOnTouchOutside">true</bool>
     <bool name="super_bottom_sheet_cancelable">true</bool>
+    <bool name="super_bottom_sheet_animate_corner_radius">true</bool>
 </resources>

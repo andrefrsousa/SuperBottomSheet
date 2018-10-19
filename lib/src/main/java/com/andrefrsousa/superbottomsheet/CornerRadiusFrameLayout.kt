@@ -1,5 +1,25 @@
 /*
- * Copyright (c) 2018 André Sousa.
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 André Sousa
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 package com.andrefrsousa.superbottomsheet
 
@@ -10,29 +30,26 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.FrameLayout
 
-
 internal class CornerRadiusFrameLayout : FrameLayout {
 
-    private lateinit var path: Path
-    private lateinit var rect: RectF
-    private var backgroundOuterRadii = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+    // Variables
+    private val path = Path()
+    private val rect = RectF()
+    private val backgroundOuterRadii = floatArrayOf(
+            // Top left corner
+            0f, 0f,
+            // Top right corner
+            0f, 0f,
+            // Bottom right corner
+            0f, 0f,
+            // Bottom left corner
+            0f, 0f
+    )
 
-    constructor(context: Context) : super(context) {
-        initView()
-    }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        initView()
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        initView()
-    }
-
-    private fun initView() {
-        path = Path()
-        rect = RectF()
-    }
+    // Constructor
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -44,6 +61,11 @@ internal class CornerRadiusFrameLayout : FrameLayout {
     }
 
     override fun dispatchDraw(canvas: Canvas) {
+        if (path.isEmpty) {
+            super.dispatchDraw(canvas)
+            return
+        }
+
         val save = canvas.save()
         canvas.clipPath(path)
         super.dispatchDraw(canvas)
@@ -58,6 +80,11 @@ internal class CornerRadiusFrameLayout : FrameLayout {
         // Top right corner
         backgroundOuterRadii[2] = radius
         backgroundOuterRadii[3] = radius
+
+        if (width == 0 || height == 0) {
+            // Discard invalid events
+            return
+        }
 
         path.reset()
         path.addRoundRect(rect, backgroundOuterRadii, Path.Direction.CW)
