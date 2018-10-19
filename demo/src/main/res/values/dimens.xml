@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Bottom sheet-->
+    <dimen name="demo_sheet_rounded_corner">16dp</dimen>
+
+</resources>

@@ -23,6 +23,7 @@
  */
 package com.andrefrsousa.superbottomsheet.demo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -51,6 +52,13 @@ class DemoBottomSheetFragment : SuperBottomSheetFragment() {
 
     override fun getInnerFragmentTag() = "DemoInnerFragment"
 
+    override fun getCornerRadius(): Float {
+        return context!!.resources.getDimension(R.dimen.demo_sheet_rounded_corner)
+    }
+
+    override fun getStatusBarColor(): Int {
+        return Color.RED
+    }
 }
 
 class DemoInnerFragment : Fragment() {
