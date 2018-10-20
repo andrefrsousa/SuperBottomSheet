@@ -25,7 +25,6 @@ package com.andrefrsousa.superbottomsheet.demo
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
@@ -48,9 +47,10 @@ class MainActivity : AppCompatActivity() {
 
 class DemoBottomSheetFragment : SuperBottomSheetFragment() {
 
-    override fun getInnerFragment() = DemoInnerFragment.newInstance()
-
-    override fun getInnerFragmentTag() = "DemoInnerFragment"
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fragment_demo_sheet, container, false)
+    }
 
     override fun getCornerRadius(): Float {
         return context!!.resources.getDimension(R.dimen.demo_sheet_rounded_corner)
@@ -58,17 +58,5 @@ class DemoBottomSheetFragment : SuperBottomSheetFragment() {
 
     override fun getStatusBarColor(): Int {
         return Color.RED
-    }
-}
-
-class DemoInnerFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_demo_inner, container, false)
-    }
-
-    // Constructor
-    companion object {
-        internal fun newInstance() = DemoInnerFragment()
     }
 }

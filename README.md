@@ -43,26 +43,16 @@ We have a sample project in Kotlin that demonstrates the lib usages [here](https
 ## Usage  
 
 It is recommended to check the sample project to get a complete understanding of all the features offered by the library.  
-In order to create a bottom sheet in your project you need two this: a class that extends SuperBottomSheetFragment, and a inner fragment that will be loaded.
+In order to create a bottom sheet in your project you just need to extend SuperBottomSheetFragment.
 
 Example:
 
 ```kotlin
 class DemoBottomSheetFragment : superBottomSheetDialogFragment() {
 
-    override fun getInnerFragment() = DemoInnerFragment.newInstance()
-
-    override fun getInnerFragmentTag() = "DemoInnerFragment"
-}
-
-class DemoInnerFragment : Fragment() {
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_demo_inner, container, false)
-    }
-
-    companion object {
-        internal fun newInstance() = DemoInnerFragment()
+        super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fragment_demo_sheet, container, false)
     }
 }
 ```

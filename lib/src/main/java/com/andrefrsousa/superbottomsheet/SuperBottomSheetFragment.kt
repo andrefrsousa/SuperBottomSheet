@@ -32,22 +32,20 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.CallSuper
 import android.support.annotation.ColorInt
 import android.support.annotation.Dimension
 import android.support.annotation.UiThread
 import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.TypedValue
 import android.view.*
-import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.fragment_super_bottom_sheet.*
 
 abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var backgroundShape: ShapeDrawable
+    private lateinit var bottomSheet: CornerRadiusFrameLayout
     private lateinit var behavior: BottomSheetBehavior<*>
 
     // Customizable properties
@@ -65,15 +63,13 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
     /** Methods from [BottomSheetDialogFragment]  */
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(this.context!!, R.style.superBottomSheetDialog)
+    final override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return SuperBottomSheetDialog(this.context!!, R.style.superBottomSheetDialog)
     }
 
+    @CallSuper
     @SuppressLint("NewApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate view
-        val contentView = inflater.inflate(R.layout.fragment_super_bottom_sheet, container, false)
-
         // Change status bar on the condition: API >= 21
         val supportsStatusBarColor = hasMinimumSdk(Build.VERSION_CODES.LOLLIPOP)
         canSetStatusBarColor = !context.isTablet() && supportsStatusBarColor
@@ -93,15 +89,10 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
             val isCancelableOnTouchOutside = propertyIsSheetCancelable && propertyIsSheetCancelableOnTouchOutside
             setCanceledOnTouchOutside(isCancelableOnTouchOutside)
-
-            if (isCancelableOnTouchOutside) {
-                contentView.rootView.setOnClickListener { dialog.cancel() }
-            }
         }
 
         // Set window properties
         dialog.window.runIfNotNull {
-            requestFeature(Window.FEATURE_NO_TITLE)
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             setDimAmount(propertyDim)
 
@@ -117,36 +108,27 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        // Don't set a peek height if the sheet is always expanded (no collapsing state)
-        if (!propertyIsAlwaysExpanded) {
-            contentView.rootView.run {
-                minimumHeight = getPeekHeight()
-            }
-        }
-
-        return contentView
+        return null
     }
 
+    @CallSuper
     override fun onStart() {
         super.onStart()
 
         // Init UI components
         iniBottomSheetUiComponents()
-
-        // Set inner fragment
-        iniBottomSheetInnerFragment()
     }
 
     //region UI METHODS
 
     @UiThread
     private fun iniBottomSheetUiComponents() {
+        // Store views references
+        bottomSheet = dialog.findViewById(R.id.super_bottom_sheet)
+        val touchOutsideView = dialog.findViewById<View>(R.id.touch_outside)
+
         // Hack to find the bottom sheet holder view
         initBackgroundShape()
-
-        // Store views references
-        val bottomSheet: FrameLayout = dialog.findViewById(android.support.design.R.id.design_bottom_sheet)
-        val touchOutsideView: View = dialog.findViewById(android.support.design.R.id.touch_outside)
 
         // Load bottom sheet behaviour
         behavior = BottomSheetBehavior.from(bottomSheet)
@@ -165,24 +147,32 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         // If is always expanded, there is no need to set the peek height
         if (!propertyIsAlwaysExpanded) {
             behavior.peekHeight = getPeekHeight()
+
+            bottomSheet.run {
+                minimumHeight = behavior.peekHeight
+            }
+        } else {
+            val layoutParams = bottomSheet.layoutParams
+            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            bottomSheet.layoutParams = layoutParams
         }
 
         // Only skip the collapse state when the device is in landscape or the sheet is always expanded
-        val deviceInLandscape = !context.isTablet() && !context.isInPortrait()
-        behavior.skipCollapsed = deviceInLandscape || propertyIsAlwaysExpanded
+        val deviceInLandscape = (!context.isTablet() && !context.isInPortrait()) || propertyIsAlwaysExpanded
+        behavior.skipCollapsed = deviceInLandscape
 
         if (deviceInLandscape) {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             setStatusBarColor(Color.TRANSPARENT)
 
             // Load content container height
-            super_bottomsheet_content.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            bottomSheet.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    if (super_bottomsheet_content.height > 0) {
-                        super_bottomsheet_content.viewTreeObserver.removeOnPreDrawListener(this)
+                    if (bottomSheet.height > 0) {
+                        bottomSheet.viewTreeObserver.removeOnPreDrawListener(this)
 
                         // If the content sheet is expanded set the background and status bar properties
-                        if (super_bottomsheet_content.height == touchOutsideView.height) {
+                        if (bottomSheet.height == touchOutsideView.height) {
                             setStatusBarColor(0f)
 
                             if (propertyAnimateCornerRadius) {
@@ -194,9 +184,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                     return true
                 }
             })
-
-        } else if (propertyIsAlwaysExpanded) {
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
         // Override sheet callback events
@@ -213,7 +200,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                     return
                 }
 
-                if (super_bottomsheet_content.height != touchOutsideView.height) {
+                if (bottomSheet.height != touchOutsideView.height) {
                     canSetStatusBarColor = false
                     return
                 }
@@ -232,19 +219,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         })
-    }
-
-    @UiThread
-    private fun iniBottomSheetInnerFragment() {
-        val innerFragment = getInnerFragment()
-
-        // Add fragment to view
-        super_bottomsheet_content.run {
-            childFragmentManager
-                    .beginTransaction()
-                    .replace(id, innerFragment, getInnerFragmentTag())
-                    .commitNow()
-        }
     }
 
     //region STATUS BAR
@@ -278,12 +252,12 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             flags = Paint.ANTI_ALIAS_FLAG
         }
 
-        super_bottomsheet_content.setCornerRadius(propertyCornerRadius)
+        bottomSheet.setCornerRadius(propertyCornerRadius)
     }
 
     private fun setBackgroundShapeRadius(radius: Float) {
         backgroundShape.shape = getShape(radius)
-        super_bottomsheet_content.setCornerRadius(radius)
+        bottomSheet.setCornerRadius(radius)
     }
 
     private fun getShape(radius: Float): RoundRectShape {
@@ -317,6 +291,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         return Math.max(peekHeightMin, displayMetrics.heightPixels - displayMetrics.heightPixels * 9 / 16)
     }
 
+    @Dimension
     open fun getDim(): Float {
         val floatId = context!!.getAttrId(R.attr.superBottomSheet_dim)
 
@@ -403,10 +378,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
         return resources.getBoolean(boolId)
     }
-
-    abstract fun getInnerFragment(): Fragment
-
-    abstract fun getInnerFragmentTag(): String
 
     //endregion
 }
