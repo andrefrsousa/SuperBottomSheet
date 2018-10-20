@@ -63,16 +63,16 @@ The are a group of general properties that you can define. These properties will
 // The amount of DIM that will be applied to the background from 0 to 1.
 <attr name="superBottomSheet_dim" format="float"/>  
 
-// The bottom sheet background color
+// Sheet background color
 <attr name="superBottomSheet_backgroundColor" format="color"/>
 
-// To radius to be applied to the bottom sheet. 0 if you want none.
+// To corner radius to be applied. 0 if you want none.
 <attr name="superBottomSheet_cornerRadius" format="dimension"/>  
 
 // Enable or disable the radius animation. Default is true.
 <attr name="superBottomSheet_animateCornerRadius" format="float"/>
 
-// Default if false, if you want to skip collapse state
+// Default if false. Enalbe it if you want to skip collapse state
 <attr name="superBottomSheet_alwaysExpanded" format="boolean"/>
 
 // Default if true
@@ -81,7 +81,7 @@ The are a group of general properties that you can define. These properties will
 // Default if true
 <attr name="superBottomSheet_cancelable" format="boolean"/>
 
-// The bottom sheet status bar color. The default uses the colorDark attribute value.  
+// Status bar color. The default uses the colorDark attribute value.  
 <attr name="superBottomSheet_statusBarColor" format="color"/>  
 
 // The height of the bottom sheet when it is collapsed 
