@@ -13,9 +13,7 @@ It has been written **100% in Kotlin**. ❤️
   
 ## Download  
   
-This library is available in **jCenter** which is the default Maven repository used in Android Studio. You can also import this library from source as a module.  
-
-Add it in your root build.gradle at the end of repositories:
+This library is available in **jitpack**, so you need to add this repository to your root build.gradle at the end of repositories:
    
 ```groovy  
 allprojects {
