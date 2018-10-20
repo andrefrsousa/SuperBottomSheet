@@ -48,7 +48,7 @@ In order to create a bottom sheet in your project you just need to extend SuperB
 Example:
 
 ```kotlin
-class DemoBottomSheetFragment : superBottomSheetDialogFragment() {
+class MySheetFragment : SuperBottomSheetFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
