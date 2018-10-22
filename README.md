@@ -1,5 +1,5 @@
 # Super Bottom Sheet  
-Android native a bottom sheet for on steroids 💪  
+Android native bottom sheet on steroids 💪  
 
 ![](/raw/banner.png)
   
