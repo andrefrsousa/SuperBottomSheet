@@ -37,7 +37,7 @@ dependencies {
   
 ## Sample Project  
 
-We have a sample project in Kotlin that demonstrates the lib usages [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
+We have a sample project in Kotlin that demonstrates the lib usage [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
 
 ![](/raw/example.gif)
   
@@ -91,7 +91,7 @@ The are a group of general properties that you can define. These properties will
 <attr name="superBottomSheet_peekHeight" format="dimension"/>
 ```
 
-If you want to specify properties for a single bottom sheet you can override some methods:
+If you want to change the properties of a single bottom sheet you can override these methods:
 
 ```kotlin
 fun getPeekHeight(): Int {
