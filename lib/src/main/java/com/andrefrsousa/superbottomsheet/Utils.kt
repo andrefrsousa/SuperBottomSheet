@@ -30,12 +30,7 @@ import android.support.annotation.ColorInt
 internal fun hasMinimumSdk(minimumSdk: Int) = Build.VERSION.SDK_INT >= minimumSdk
 
 @ColorInt
-internal fun blendColors(@ColorInt from: Int, @ColorInt to: Int, ratio: Float): Int {
-    val inverseRatio = 1f - ratio
-
-    val r = Color.red(to) * ratio + Color.red(from) * inverseRatio
-    val g = Color.green(to) * ratio + Color.green(from) * inverseRatio
-    val b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio
-
-    return Color.rgb(r.toInt(), g.toInt(), b.toInt())
+internal fun calculateColor(@ColorInt to: Int, ratio: Float): Int {
+    val alpha = (MAX_ALPHA - (MAX_ALPHA * ratio)).toInt()
+    return Color.argb(alpha, Color.red(to), Color.green(to), Color.blue(to))
 }

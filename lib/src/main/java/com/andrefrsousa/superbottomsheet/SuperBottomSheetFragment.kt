@@ -210,8 +210,8 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                     return
                 }
 
-                val dim = propertyDim - (propertyDim * slideOffset)
-                setStatusBarColor(dim)
+                val invertOffset = 1 - (1 * slideOffset)
+                setStatusBarColor(invertOffset)
 
                 if (propertyAnimateCornerRadius) {
                     val radius = propertyCornerRadius - (propertyCornerRadius * slideOffset)
@@ -224,7 +224,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     //region STATUS BAR
 
     @UiThread
-    private fun setStatusBarColor(dim: Float) = setStatusBarColor(blendColors(propertyStatusBarColor, Color.BLACK, dim))
+    private fun setStatusBarColor(dim: Float) = setStatusBarColor(calculateColor(propertyStatusBarColor, dim))
 
     @SuppressLint("NewApi")
     @UiThread
