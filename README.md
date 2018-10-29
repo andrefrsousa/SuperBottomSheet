@@ -1,15 +1,18 @@
 # Super Bottom Sheet  
-Android native a bottom sheet for on steroids 💪  
+Android native bottom sheet on steroids 💪  
 
 ![](/raw/banner.png)
   
 ## Specs  
-[![](https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg)](https://jitpack.io/#andrefrsousa/SuperBottomSheet) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Build Status](https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master)](https://travis-ci.org/andrefrsousa/SuperBottomSheet)
+[![](https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg)](https://jitpack.io/#andrefrsousa/SuperBottomSheet) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Build Status](https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master)](https://travis-ci.org/andrefrsousa/SuperBottomSheet) [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-SuperBottomSheet-green.svg?style=flat )]( https://android-arsenal.com/details/1/7259 )
   
   
 This library allows you to show bottom sheets in your app with the bonus of **animating the status bar** color and the **top rounded corners** as you scroll.   
 
 It has been written **100% in Kotlin**. ❤️  
+
+## Spread Some :heart:  
+[![GitHub stars](https://img.shields.io/github/stars/andrefrsousa/superbottomsheet.svg?style=social&label=Star)](https://github.com/andrefrsousa/superbottomsheet) [![GitHub forks](https://img.shields.io/github/forks/andrefrsousa/superbottomsheet.svg?style=social&label=Fork)](https://github.com/andrefrsousa/superbottomsheet/fork) [![GitHub followers](https://img.shields.io/github/followers/andrefrsousa.svg?style=social&label=Follow)](https://github.com/andrefrsousa)  [![Twitter Follow](https://img.shields.io/twitter/follow/andrefrsousa.svg?style=social)](https://twitter.com/andrefrsousa)
   
 ## Download  
   
@@ -34,7 +37,7 @@ dependencies {
   
 ## Sample Project  
 
-We have a sample project in Kotlin that demonstrates the lib usages [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
+We have a sample project in Kotlin that demonstrates the lib usage [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
 
 ![](/raw/example.gif)
   
@@ -88,7 +91,7 @@ The are a group of general properties that you can define. These properties will
 <attr name="superBottomSheet_peekHeight" format="dimension"/>
 ```
 
-If you want to specify properties for a single bottom sheet you can override some methods:
+If you want to change the properties of a single bottom sheet you can override these methods:
 
 ```kotlin
 fun getPeekHeight(): Int {
@@ -128,9 +131,6 @@ fun animateCornerRadius(): Boolean {
 }
 
 ```
-
-## Spread Some :heart:  
-[![GitHub followers](https://img.shields.io/github/followers/andrefrsousa.svg?style=social&label=Follow)](https://github.com/andrefrsousa)  [![Twitter Follow](https://img.shields.io/twitter/follow/andrefrsousa.svg?style=social)](https://twitter.com/andrefrsousa)
   
 ## License  
   
