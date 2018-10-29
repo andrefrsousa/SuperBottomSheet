@@ -51,6 +51,7 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
     private var mCanceledOnTouchOutside = true
     private var mCanceledOnTouchOutsideSet: Boolean = false
 
+    @Suppress("unused")
     constructor(context: Context?) : this(context, 0)
 
     constructor(context: Context?, theme: Int) : super(context, theme) {
@@ -59,13 +60,10 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
     }
 
+    @Suppress("unused")
     constructor(context: Context?, cancelable: Boolean, cancelListener: OnCancelListener?) : super(context, cancelable, cancelListener) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         mCancelable = cancelable
-    }
-
-    override fun setContentView(@LayoutRes layoutResId: Int) {
-        super.setContentView(wrapInBottomSheet(layoutResId, null, null))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,13 +79,11 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
         }
     }
 
-    override fun setContentView(view: View) {
-        super.setContentView(wrapInBottomSheet(0, view, null))
-    }
+    override fun setContentView(@LayoutRes layoutResId: Int)  = super.setContentView(wrapInBottomSheet(layoutResId, null, null))
 
-    override fun setContentView(view: View, params: ViewGroup.LayoutParams?) {
-        super.setContentView(wrapInBottomSheet(0, view, params))
-    }
+    override fun setContentView(view: View) = super.setContentView(wrapInBottomSheet(0, view, null))
+
+    override fun setContentView(view: View, params: ViewGroup.LayoutParams?) = super.setContentView(wrapInBottomSheet(0, view, params))
 
     override fun setCancelable(cancelable: Boolean) {
         super.setCancelable(cancelable)
@@ -155,11 +151,14 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
 
             override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
                 super.onInitializeAccessibilityNodeInfo(host, info)
-                if (mCancelable) {
-                    info.addAction(AccessibilityNodeInfoCompat.ACTION_DISMISS)
-                    info.isDismissable = true
-                } else {
-                    info.isDismissable = false
+
+                when {
+                    mCancelable -> {
+                        info.addAction(AccessibilityNodeInfoCompat.ACTION_DISMISS)
+                        info.isDismissable = true
+                    }
+
+                    else -> info.isDismissable = false
                 }
             }
 
@@ -168,6 +167,7 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
                     cancel()
                     return true
                 }
+
                 return super.performAccessibilityAction(host, action, args)
             }
         })

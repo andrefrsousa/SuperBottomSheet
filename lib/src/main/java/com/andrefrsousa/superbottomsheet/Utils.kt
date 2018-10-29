@@ -27,9 +27,7 @@ import android.graphics.Color
 import android.os.Build
 import android.support.annotation.ColorInt
 
-internal fun hasMinimumSdk(minimumSdk: Int): Boolean {
-    return Build.VERSION.SDK_INT >= minimumSdk
-}
+internal fun hasMinimumSdk(minimumSdk: Int) = Build.VERSION.SDK_INT >= minimumSdk
 
 @ColorInt
 internal fun blendColors(@ColorInt from: Int, @ColorInt to: Int, ratio: Float): Int {

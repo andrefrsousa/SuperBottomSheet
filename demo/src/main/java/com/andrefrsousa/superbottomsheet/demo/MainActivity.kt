@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         show_sheet.setOnClickListener {
             val sheet = DemoBottomSheetFragment()
-            sheet.show(supportFragmentManager, sheet.tag)
+            sheet.show(supportFragmentManager, "DemoBottomSheetFragment")
         }
     }
 }
@@ -52,11 +52,7 @@ class DemoBottomSheetFragment : SuperBottomSheetFragment() {
         return inflater.inflate(R.layout.fragment_demo_sheet, container, false)
     }
 
-    override fun getCornerRadius(): Float {
-        return context!!.resources.getDimension(R.dimen.demo_sheet_rounded_corner)
-    }
+    override fun getCornerRadius() = context!!.resources.getDimension(R.dimen.demo_sheet_rounded_corner)
 
-    override fun getStatusBarColor(): Int {
-        return Color.RED
-    }
+    override fun getStatusBarColor() = Color.RED
 }

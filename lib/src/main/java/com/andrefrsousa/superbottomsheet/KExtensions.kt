@@ -32,43 +32,33 @@ import android.view.View
 
 //region NULL
 
-internal inline fun <T, R> T?.runIfNotNull(block: T.() -> R): R? {
-    return this?.block()
-}
+internal inline fun <T, R> T?.runIfNotNull(block: T.() -> R): R? = this?.block()
 
 //endregion
 
 //region VIEW
 
-internal fun View.setBackgroundCompat(drawable: Drawable) {
-    if (hasMinimumSdk(Build.VERSION_CODES.JELLY_BEAN)) {
-        background = drawable
-    } else {
-        @Suppress("DEPRECATION")
-        setBackgroundDrawable(drawable)
-    }
+@Suppress("DEPRECATION")
+internal fun View.setBackgroundCompat(drawable: Drawable) = when {
+    hasMinimumSdk(Build.VERSION_CODES.JELLY_BEAN) -> background = drawable
+    else -> setBackgroundDrawable(drawable)
 }
 
 //endregion
 
 //region CONTEXT
 
-internal fun Context?.isTablet(): Boolean {
-    return this?.resources?.getBoolean(R.bool.super_bottom_sheet_isTablet) ?: false
-}
+internal fun Context?.isTablet() = this?.resources?.getBoolean(R.bool.super_bottom_sheet_isTablet) ?: false
 
-internal fun Context?.isInPortrait(): Boolean {
-    return this?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
-}
+internal fun Context?.isInPortrait() = this?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
 
 internal fun Context.getAttrId(attrId: Int): Int {
-    val typedValue = TypedValue()
-
-    if (!theme.resolveAttribute(attrId, typedValue, true)) {
-        return INVALID_RESOURCE_ID
+    TypedValue().run {
+        return when {
+            !theme.resolveAttribute(attrId, this, true) -> INVALID_RESOURCE_ID
+            else -> resourceId
+        }
     }
-
-    return typedValue.resourceId
 }
 
 //endregion

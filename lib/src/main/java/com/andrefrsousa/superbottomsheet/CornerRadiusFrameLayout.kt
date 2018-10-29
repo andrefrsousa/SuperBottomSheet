@@ -54,23 +54,23 @@ internal class CornerRadiusFrameLayout : FrameLayout {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        path.reset()
         rect.set(0f, 0f, w.toFloat(), h.toFloat())
-        path.addRoundRect(rect, backgroundOuterRadii, Path.Direction.CW)
-        path.close()
+        resetPath()
     }
 
-    override fun dispatchDraw(canvas: Canvas) {
-        if (path.isEmpty) {
-            super.dispatchDraw(canvas)
-            return
+    override fun dispatchDraw(canvas: Canvas) = when {
+        path.isEmpty -> super.dispatchDraw(canvas)
+
+        else -> with(canvas) {
+            val save = save()
+            clipPath(path)
+
+            super.dispatchDraw(this)
+            restoreToCount(save)
         }
-
-        val save = canvas.save()
-        canvas.clipPath(path)
-        super.dispatchDraw(canvas)
-        canvas.restoreToCount(save)
     }
+
+    //region PUBLIC METHODS
 
     internal fun setCornerRadius(radius: Float) {
         // Top left corner
@@ -86,10 +86,19 @@ internal class CornerRadiusFrameLayout : FrameLayout {
             return
         }
 
-        path.reset()
-        path.addRoundRect(rect, backgroundOuterRadii, Path.Direction.CW)
-        path.close()
-
+        resetPath()
         invalidate()
     }
+
+    //endregion
+
+    //region PRIVATE METHODS
+
+    private fun resetPath() = path.run {
+        reset()
+        addRoundRect(rect, backgroundOuterRadii, Path.Direction.CW)
+        close()
+    }
+
+    //endregion
 }

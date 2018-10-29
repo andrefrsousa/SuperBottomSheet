@@ -224,9 +224,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     //region STATUS BAR
 
     @UiThread
-    private fun setStatusBarColor(dim: Float) {
-        setStatusBarColor(blendColors(propertyStatusBarColor, Color.BLACK, dim))
-    }
+    private fun setStatusBarColor(dim: Float) = setStatusBarColor(blendColors(propertyStatusBarColor, Color.BLACK, dim))
 
     @SuppressLint("NewApi")
     @UiThread
@@ -277,106 +275,83 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     //region PUBLIC
 
     @Dimension
-    open fun getPeekHeight(): Int {
-        val dimenId = context!!.getAttrId(R.attr.superBottomSheet_peekHeight)
-
-        val peekHeightMin = if (dimenId == INVALID_RESOURCE_ID) {
-            resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
-        } else {
-            resources.getDimensionPixelSize(dimenId)
+    open fun getPeekHeight(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_peekHeight)) {
+        val peekHeightMin = when (this) {
+            INVALID_RESOURCE_ID -> resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
+            else -> resources.getDimensionPixelSize(this)
         }
 
         // 16:9 ratio
-        val displayMetrics = resources.displayMetrics
-        return Math.max(peekHeightMin, displayMetrics.heightPixels - displayMetrics.heightPixels * 9 / 16)
+        return with(resources.displayMetrics) {
+            Math.max(peekHeightMin, heightPixels - heightPixels * 9 / 16)
+        }
     }
 
     @Dimension
-    open fun getDim(): Float {
-        val floatId = context!!.getAttrId(R.attr.superBottomSheet_dim)
+    open fun getDim(): Float = with(context!!.getAttrId(R.attr.superBottomSheet_dim)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> TypedValue().run {
+                resources.getValue(R.dimen.super_bottom_sheet_dim, this, true)
+                float
+            }
 
-        if (floatId == INVALID_RESOURCE_ID) {
-            val outValue = TypedValue()
-            resources.getValue(R.dimen.super_bottom_sheet_dim, outValue, true)
-            return outValue.float
+            else -> TypedValue().let {
+                resources.getValue(this, it, true)
+                it.float
+            }
         }
-
-        val outValue = TypedValue()
-        resources.getValue(floatId, outValue, true)
-        return outValue.float
     }
 
     @ColorInt
-    open fun getBackgroundColor(): Int {
-        val colorId = context!!.getAttrId(R.attr.superBottomSheet_backgroundColor)
-
-        if (colorId == INVALID_RESOURCE_ID) {
-            return Color.WHITE
+    open fun getBackgroundColor(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_backgroundColor)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> Color.WHITE
+            else -> ContextCompat.getColor(context!!, this)
         }
-
-        return ContextCompat.getColor(context!!, colorId)
     }
 
     @ColorInt
-    open fun getStatusBarColor(): Int {
-        val colorId = context!!.getAttrId(R.attr.superBottomSheet_statusBarColor)
-
-        if (colorId == INVALID_RESOURCE_ID) {
-            return ContextCompat.getColor(context!!, context!!.getAttrId(R.attr.colorPrimaryDark))
+    open fun getStatusBarColor(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_statusBarColor)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> ContextCompat.getColor(context!!, context!!.getAttrId(R.attr.colorPrimaryDark))
+            else -> ContextCompat.getColor(context!!, this)
         }
-
-        return ContextCompat.getColor(context!!, colorId)
     }
 
     @Dimension
-    open fun getCornerRadius(): Float {
-        val dimenId = context!!.getAttrId(R.attr.superBottomSheet_cornerRadius)
-
-        if (dimenId == INVALID_RESOURCE_ID) {
-            return context!!.resources.getDimension(R.dimen.super_bottom_sheet_radius)
+    open fun getCornerRadius(): Float = with(context!!.getAttrId(R.attr.superBottomSheet_cornerRadius)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> context!!.resources.getDimension(R.dimen.super_bottom_sheet_radius)
+            else -> resources.getDimension(this)
         }
-
-        return resources.getDimension(dimenId)
     }
 
-    open fun isSheetAlwaysExpanded(): Boolean {
-        val boolId = context!!.getAttrId(R.attr.superBottomSheet_alwaysExpanded)
-
-        if (boolId == INVALID_RESOURCE_ID) {
-            return context!!.resources.getBoolean(R.bool.super_bottom_sheet_isAlwaysExpanded)
+    open fun isSheetAlwaysExpanded(): Boolean = with(context!!.getAttrId(R.attr.superBottomSheet_alwaysExpanded)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> context!!.resources.getBoolean(R.bool.super_bottom_sheet_isAlwaysExpanded)
+            else -> resources.getBoolean(this)
         }
-
-        return resources.getBoolean(boolId)
     }
 
-    open fun isSheetCancelableOnTouchOutside(): Boolean {
-        val boolId = context!!.getAttrId(R.attr.superBottomSheet_cancelableOnTouchOutside)
-
-        if (boolId == INVALID_RESOURCE_ID) {
-            return context!!.resources.getBoolean(R.bool.super_bottom_sheet_cancelableOnTouchOutside)
+    open fun isSheetCancelableOnTouchOutside(): Boolean = with(context!!.getAttrId(R.attr.superBottomSheet_cancelableOnTouchOutside)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> context!!.resources.getBoolean(R.bool.super_bottom_sheet_cancelableOnTouchOutside)
+            else -> resources.getBoolean(this)
         }
-
-        return resources.getBoolean(boolId)
     }
 
-    open fun isSheetCancelable(): Boolean {
-        val boolId = context!!.getAttrId(R.attr.superBottomSheet_cancelable)
-
-        if (boolId == INVALID_RESOURCE_ID) {
-            return context!!.resources.getBoolean(R.bool.super_bottom_sheet_cancelable)
+    open fun isSheetCancelable(): Boolean = with(context!!.getAttrId(R.attr.superBottomSheet_cancelable)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> context!!.resources.getBoolean(R.bool.super_bottom_sheet_cancelable)
+            else -> resources.getBoolean(this)
         }
-
-        return resources.getBoolean(boolId)
     }
 
-    open fun animateCornerRadius(): Boolean {
-        val boolId = context!!.getAttrId(R.attr.superBottomSheet_animateCornerRadius)
-
-        if (boolId == INVALID_RESOURCE_ID) {
-            return context!!.resources.getBoolean(R.bool.super_bottom_sheet_animate_corner_radius)
+    open fun animateCornerRadius(): Boolean = with(context!!.getAttrId(R.attr.superBottomSheet_animateCornerRadius)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> context!!.resources.getBoolean(R.bool.super_bottom_sheet_animate_corner_radius)
+            else -> resources.getBoolean(this)
         }
-
-        return resources.getBoolean(boolId)
     }
 
     //endregion
