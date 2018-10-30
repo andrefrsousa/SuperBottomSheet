@@ -11,10 +11,7 @@
 ### Summary  
 This library allows you to show bottom sheets in your app with the bonus of **animating the status bar** color and the **top rounded corners** as you scroll.   
 
-It has been written **100% in Kotlin**. ❤️  
-
-## Spread Some :heart:  
-[![GitHub stars](https://img.shields.io/github/stars/andrefrsousa/superbottomsheet.svg?style=social&label=Star)](https://github.com/andrefrsousa/superbottomsheet) [![GitHub forks](https://img.shields.io/github/forks/andrefrsousa/superbottomsheet.svg?style=social&label=Fork)](https://github.com/andrefrsousa/superbottomsheet/fork) [![GitHub followers](https://img.shields.io/github/followers/andrefrsousa.svg?style=social&label=Follow)](https://github.com/andrefrsousa)  [![Twitter Follow](https://img.shields.io/twitter/follow/andrefrsousa.svg?style=social)](https://twitter.com/andrefrsousa)
+It has been written **100% in Kotlin**. ❤️
   
 ## Download  
   
