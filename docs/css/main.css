@@ -9,7 +9,7 @@ p.install-text code {
 }
 
 p.install-text code::before {
-  content: '$ ';
+  content: '';
 }
 
 p.install-text code:hover {
