@@ -1,5 +1,5 @@
 <p align="center"><a href="https://github.com/andrefrsousa/SuperBottomSheet" target="_blank"><img width="250"src="raw/logo.png"></a></p>
-<h1 align="center">SuperBottomSheet</h1>
+<h1 align="center">Super Bottom Sheet</h1>
 <p align="center">Android native bottom sheet on steroids 💪</p>
 <p align="center">
   <a href="https://travis-ci.org/andrefrsousa/SuperBottomSheet"><img src="https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master" alt="Build Status"></a>
