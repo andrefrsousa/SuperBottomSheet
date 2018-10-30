@@ -1,12 +1,14 @@
-# Super Bottom Sheet  
-Android native bottom sheet on steroids 💪  
-
-![](/raw/banner.png)
+<p align="center"><a href="https://github.com/andrefrsousa/SuperBottomSheet" target="_blank"><img width="200"src="raw/banner.png"></a></p>
+<h1 align="center">SuperBottomSheet</h1>
+<p align="center">Android native bottom sheet on steroids 💪  </p>
+<p align="center">
+  <a href="https://travis-ci.org/andrefrsousa/SuperBottomSheet"><img src="https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master" alt="Build Status"></a>
+  <a href="https://jitpack.io/#andrefrsousa/SuperBottomSheet"><img src="https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg" alt="jitpack"></a>
+  <a href="https://android-arsenal.com/api?level=14"><img src="https://img.shields.io/badge/API-14%2B-orange.svg?style=flat" alt="api"></a>
+  <a href="https://android-arsenal.com/details/1/7259"><img src="https://img.shields.io/badge/Android%20Arsenal-SuperBottomSheet-green.svg?style=flat" alt="Android Arsenal"></a>
+</p>
   
-## Specs  
-[![](https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg)](https://jitpack.io/#andrefrsousa/SuperBottomSheet) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Build Status](https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master)](https://travis-ci.org/andrefrsousa/SuperBottomSheet) [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-SuperBottomSheet-green.svg?style=flat )]( https://android-arsenal.com/details/1/7259 )
-  
-  
+## Summary  
 This library allows you to show bottom sheets in your app with the bonus of **animating the status bar** color and the **top rounded corners** as you scroll.   
 
 It has been written **100% in Kotlin**. ❤️  
@@ -131,7 +133,18 @@ fun animateCornerRadius(): Boolean {
 }
 
 ```
-  
+
+## Project Maintained By
+
+[André Sousa](https://andrefrsousa.github.io)
+
+Design-focused Engineer | Front-end Developer | Open-Source Enthusiast | Android | Husband | Foodie
+
+<a href="https://www.linkedin.com/in/andrefrsousa/"><img src="https://github.com/andrefrsousa/social-icons/blob/master/linkedin.png?raw=true" width="40" style="margin-right:8px"></a>
+<a href="https://stackoverflow.com/users/1574250/andré-sousa"><img src="https://github.com/andrefrsousa/social-icons/blob/master/stackoverflow.png?raw=true" width="40" style="margin-right:8px"></a>
+<a href="https://medium.com/andré-sousa"><img src="https://github.com/andrefrsousa/social-icons/blob/master/medium.png?raw=true" width="40" style="margin-right:8px"></a>
+<a href="https://twitter.com/andrefrsousa"><img src="https://github.com/andrefrsousa/social-icons/blob/master/twitter.png?raw=true" width="40" style="margin-right:8px"></a>
+
 ## License  
   
 ```  
