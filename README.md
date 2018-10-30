@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/andrefrsousa/SuperBottomSheet" target="_blank"><img width="200"src="raw/banner.png"></a></p>
+<p align="center"><a href="https://github.com/andrefrsousa/SuperBottomSheet" target="_blank"><img width="250"src="raw/banner.png"></a></p>
 <h1 align="center">SuperBottomSheet</h1>
 <p align="center">Android native bottom sheet on steroids 💪  </p>
 <p align="center">
