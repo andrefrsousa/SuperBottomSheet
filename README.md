@@ -1,5 +1,5 @@
 <p align="center"><a href="https://github.com/andrefrsousa/SuperBottomSheet" target="_blank"><img width="250"src="raw/logo.png"></a></p>
-<h1 align="center">SuperBottomSheet</h1>
+<h1 align="center">Super Bottom Sheet</h1>
 <p align="center">Android native bottom sheet on steroids 💪</p>
 <p align="center">
   <a href="https://travis-ci.org/andrefrsousa/SuperBottomSheet"><img src="https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master" alt="Build Status"></a>
@@ -30,7 +30,7 @@ Add the dependency:
 
 ```groovy 
 dependencies {
-    implementation 'com.github.andrefrsousa:SuperBottomSheet:{latest_version}'
+    implementation 'com.github.andrefrsousa:SuperBottomSheet:1.2.1'
 }
 ```  
   
@@ -133,7 +133,7 @@ fun animateCornerRadius(): Boolean {
 
 ## Project Maintained By
 
-[André Sousa](https://andrefrsousa.github.io)
+### [André Sousa](https://andrefrsousa.github.io)
 
 Design-focused Engineer | Front-end Developer | Open-Source Enthusiast | Android | Husband | Foodie
 
