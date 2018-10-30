@@ -133,7 +133,7 @@ fun animateCornerRadius(): Boolean {
 
 ## Project Maintained By
 
-[André Sousa](https://andrefrsousa.github.io)
+### [André Sousa](https://andrefrsousa.github.io)
 
 Design-focused Engineer | Front-end Developer | Open-Source Enthusiast | Android | Husband | Foodie
 
