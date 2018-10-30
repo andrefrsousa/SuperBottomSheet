@@ -8,7 +8,7 @@
   <a href="https://android-arsenal.com/details/1/7259"><img src="https://img.shields.io/badge/Android%20Arsenal-SuperBottomSheet-green.svg?style=flat" alt="Android Arsenal"></a>
 </p>
   
-## Summary  
+### Summary  
 This library allows you to show bottom sheets in your app with the bonus of **animating the status bar** color and the **top rounded corners** as you scroll.   
 
 It has been written **100% in Kotlin**. ❤️  
