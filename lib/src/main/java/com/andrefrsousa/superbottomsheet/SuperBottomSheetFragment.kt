@@ -52,6 +52,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     private var propertyIsAlwaysExpanded = false
     private var propertyIsSheetCancelableOnTouchOutside = true
     private var propertyIsSheetCancelable = true
+    private var propertyAnimateStatusBar = true
     private var propertyAnimateCornerRadius = true
 
     // Bottom sheet properties
@@ -77,6 +78,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         propertyIsAlwaysExpanded = isSheetAlwaysExpanded()
         propertyIsSheetCancelable = isSheetCancelable()
         propertyIsSheetCancelableOnTouchOutside = isSheetCancelableOnTouchOutside()
+        propertyAnimateStatusBar = animateStatusBar()
         propertyAnimateCornerRadius = animateCornerRadius()
 
         // Set dialog properties
@@ -95,7 +97,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             if (supportsStatusBarColor) {
                 addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                statusBarColor = Color.TRANSPARENT
+                setStatusBarColor(1f)
             }
 
             if (context.isTablet() && !context.isInPortrait()) {
@@ -157,7 +159,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
         if (deviceInLandscape) {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            setStatusBarColor(Color.TRANSPARENT)
+            setStatusBarColor(1f)
 
             // Load content container height
             sheetContainer.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
@@ -184,7 +186,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    setStatusBarColor(Color.TRANSPARENT)
+                    setStatusBarColor(1f)
                     dialog.cancel()
                 }
             }
@@ -210,7 +212,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         if (slideOffset.isNaN() || slideOffset <= 0) {
-            setStatusBarColor(Color.TRANSPARENT)
+            setStatusBarColor(1f)
             return
         }
 
@@ -218,14 +220,17 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         setStatusBarColor(invertOffset)
     }
 
-    @UiThread
-    private fun setStatusBarColor(dim: Float) = setStatusBarColor(calculateColor(propertyStatusBarColor, dim))
-
     @SuppressLint("NewApi")
     @UiThread
-    private fun setStatusBarColor(@ColorInt color: Int) {
+    private fun setStatusBarColor(dim: Float) {
         if (!canSetStatusBarColor) {
             return
+        }
+
+        val color = if (!propertyAnimateStatusBar) {
+            calculateColor(propertyStatusBarColor, 0f)
+        } else {
+            calculateColor(propertyStatusBarColor, dim)
         }
 
         dialog.window!!.statusBarColor = color
@@ -337,6 +342,13 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     open fun animateCornerRadius(): Boolean = with(context!!.getAttrId(R.attr.superBottomSheet_animateCornerRadius)) {
         return when (this) {
             INVALID_RESOURCE_ID -> context!!.resources.getBoolean(R.bool.super_bottom_sheet_animate_corner_radius)
+            else -> resources.getBoolean(this)
+        }
+    }
+
+    open fun animateStatusBar(): Boolean = with(context!!.getAttrId(R.attr.superBottomSheet_animateStatusBar)) {
+        return when (this) {
+            INVALID_RESOURCE_ID -> context!!.resources.getBoolean(R.bool.super_bottom_sheet_animate_status_bar)
             else -> resources.getBoolean(this)
         }
     }
