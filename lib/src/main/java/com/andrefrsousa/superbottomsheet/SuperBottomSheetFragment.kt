@@ -41,6 +41,7 @@ import android.view.*
 
 abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
+    private lateinit var sheetTouchOutsideContainer: View
     private lateinit var sheetContainer: CornerRadiusFrameLayout
     private lateinit var behavior: BottomSheetBehavior<*>
 
@@ -120,7 +121,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     private fun iniBottomSheetUiComponents() {
         // Store views references
         sheetContainer = dialog.findViewById(R.id.super_bottom_sheet)
-        val touchOutsideView = dialog.findViewById<View>(R.id.touch_outside)
+        sheetTouchOutsideContainer = dialog.findViewById(R.id.touch_outside)
 
         // Set the bottom sheet radius
         sheetContainer.setBackgroundColor(getBackgroundColor())
@@ -165,7 +166,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                         sheetContainer.viewTreeObserver.removeOnPreDrawListener(this)
 
                         // If the content sheet is expanded set the background and status bar properties
-                        if (sheetContainer.height == touchOutsideView.height) {
+                        if (sheetContainer.height == sheetTouchOutsideContainer.height) {
                             setStatusBarColor(0f)
 
                             if (propertyAnimateCornerRadius) {
@@ -189,32 +190,33 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                if (propertyAnimateCornerRadius) {
-                    val radius = propertyCornerRadius - (propertyCornerRadius * slideOffset)
-                    sheetContainer.setCornerRadius(radius)
-                }
-
-                if (!canSetStatusBarColor) {
-                    return
-                }
-
-                if (bottomSheet.height != touchOutsideView.height) {
-                    canSetStatusBarColor = false
-                    return
-                }
-
-                if (slideOffset.isNaN() || slideOffset <= 0) {
-                    setStatusBarColor(Color.TRANSPARENT)
-                    return
-                }
-
-                val invertOffset = 1 - (1 * slideOffset)
-                setStatusBarColor(invertOffset)
+                setRoundedCornersOnScroll(bottomSheet, slideOffset)
+                setStatusBarColorOnScroll(bottomSheet, slideOffset)
             }
         })
     }
 
     //region STATUS BAR
+
+    @UiThread
+    private fun setStatusBarColorOnScroll(bottomSheet: View, slideOffset: Float) {
+        if (!canSetStatusBarColor) {
+            return
+        }
+
+        if (bottomSheet.height != sheetTouchOutsideContainer.height) {
+            canSetStatusBarColor = false
+            return
+        }
+
+        if (slideOffset.isNaN() || slideOffset <= 0) {
+            setStatusBarColor(Color.TRANSPARENT)
+            return
+        }
+
+        val invertOffset = 1 - (1 * slideOffset)
+        setStatusBarColor(invertOffset)
+    }
 
     @UiThread
     private fun setStatusBarColor(dim: Float) = setStatusBarColor(calculateColor(propertyStatusBarColor, dim))
@@ -227,6 +229,32 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         dialog.window!!.statusBarColor = color
+    }
+
+    //endregion
+
+    //region CORNERS
+
+    @UiThread
+    private fun setRoundedCornersOnScroll(bottomSheet: View, slideOffset: Float) {
+        if (!propertyAnimateCornerRadius) {
+            return
+        }
+
+        if (bottomSheet.height != sheetTouchOutsideContainer.height) {
+            propertyAnimateCornerRadius = false
+            return
+        }
+
+        if (slideOffset.isNaN() || slideOffset <= 0) {
+            sheetContainer.setCornerRadius(propertyCornerRadius)
+            return
+        }
+
+        if (propertyAnimateCornerRadius) {
+            val radius = propertyCornerRadius - (propertyCornerRadius * slideOffset)
+            sheetContainer.setCornerRadius(radius)
+        }
     }
 
     //endregion
