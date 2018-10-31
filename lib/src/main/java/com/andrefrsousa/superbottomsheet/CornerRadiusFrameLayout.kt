@@ -27,6 +27,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Path
 import android.graphics.RectF
+import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 
@@ -48,9 +49,17 @@ internal class CornerRadiusFrameLayout : FrameLayout {
     )
 
     // Constructor
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context) : super(context) {
+        initView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initView()
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        initView()
+    }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -59,14 +68,14 @@ internal class CornerRadiusFrameLayout : FrameLayout {
         resetPath()
     }
 
-    override fun dispatchDraw(canvas: Canvas) = when {
-        noCornerRadius -> super.dispatchDraw(canvas)
+    override fun draw(canvas: Canvas?) = when {
+        noCornerRadius -> super.draw(canvas)
 
-        else -> with(canvas) {
+        else -> with(canvas!!) {
             val save = save()
             clipPath(path)
 
-            super.dispatchDraw(this)
+            super.draw(this)
             restoreToCount(save)
         }
     }
@@ -82,12 +91,13 @@ internal class CornerRadiusFrameLayout : FrameLayout {
         outerRadii[2] = radius
         outerRadii[3] = radius
 
+        noCornerRadius = (radius == 0f)
+
         if (width == 0 || height == 0) {
             // Discard invalid events
             return
         }
 
-        noCornerRadius = radius == 0f
         resetPath()
         invalidate()
     }
@@ -95,6 +105,12 @@ internal class CornerRadiusFrameLayout : FrameLayout {
     //endregion
 
     //region PRIVATE METHODS
+
+    private fun initView() {
+        if (hasMaximumSdk(Build.VERSION_CODES.JELLY_BEAN_MR1)) {
+            setLayerType(LAYER_TYPE_SOFTWARE, null)
+        }
+    }
 
     private fun resetPath() = path.run {
         reset()

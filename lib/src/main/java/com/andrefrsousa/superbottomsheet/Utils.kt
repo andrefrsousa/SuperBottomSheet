@@ -29,6 +29,8 @@ import android.support.annotation.ColorInt
 
 internal fun hasMinimumSdk(minimumSdk: Int) = Build.VERSION.SDK_INT >= minimumSdk
 
+internal fun hasMaximumSdk(maximumSdk: Int) = Build.VERSION.SDK_INT <= maximumSdk
+
 @ColorInt
 internal fun calculateColor(@ColorInt to: Int, ratio: Float): Int {
     val alpha = (MAX_ALPHA - (MAX_ALPHA * ratio)).toInt()

@@ -26,9 +26,7 @@ package com.andrefrsousa.superbottomsheet
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.ShapeDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.CallSuper
@@ -43,9 +41,7 @@ import android.view.*
 
 abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private lateinit var backgroundDrawable: ShapeDrawable
-    private lateinit var backgroundShape: SheetRoundRectShape
-    private lateinit var bottomSheet: CornerRadiusFrameLayout
+    private lateinit var sheetContainer: CornerRadiusFrameLayout
     private lateinit var behavior: BottomSheetBehavior<*>
 
     // Customizable properties
@@ -123,37 +119,35 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     @UiThread
     private fun iniBottomSheetUiComponents() {
         // Store views references
-        bottomSheet = dialog.findViewById(R.id.super_bottom_sheet)
+        sheetContainer = dialog.findViewById(R.id.super_bottom_sheet)
         val touchOutsideView = dialog.findViewById<View>(R.id.touch_outside)
 
-        // Hack to find the bottom sheet holder view
-        initBackgroundShape()
+        // Set the bottom sheet radius
+        sheetContainer.setBackgroundColor(getBackgroundColor())
+        sheetContainer.setCornerRadius(propertyCornerRadius)
 
         // Load bottom sheet behaviour
-        behavior = BottomSheetBehavior.from(bottomSheet)
-
-        // Set background shape
-        bottomSheet.setBackgroundCompat(backgroundDrawable)
+        behavior = BottomSheetBehavior.from(sheetContainer)
 
         // Set tablet sheet width when in landscape. This will avoid full bleed sheet
         if (context.isTablet() && !context.isInPortrait()) {
-            val layoutParams = bottomSheet.layoutParams
+            val layoutParams = sheetContainer.layoutParams
             layoutParams.width = resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_width)
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            bottomSheet.layoutParams = layoutParams
+            sheetContainer.layoutParams = layoutParams
         }
 
         // If is always expanded, there is no need to set the peek height
         if (!propertyIsAlwaysExpanded) {
             behavior.peekHeight = getPeekHeight()
 
-            bottomSheet.run {
+            sheetContainer.run {
                 minimumHeight = behavior.peekHeight
             }
         } else {
-            val layoutParams = bottomSheet.layoutParams
+            val layoutParams = sheetContainer.layoutParams
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-            bottomSheet.layoutParams = layoutParams
+            sheetContainer.layoutParams = layoutParams
         }
 
         // Only skip the collapse state when the device is in landscape or the sheet is always expanded
@@ -165,17 +159,17 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             setStatusBarColor(Color.TRANSPARENT)
 
             // Load content container height
-            bottomSheet.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            sheetContainer.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    if (bottomSheet.height > 0) {
-                        bottomSheet.viewTreeObserver.removeOnPreDrawListener(this)
+                    if (sheetContainer.height > 0) {
+                        sheetContainer.viewTreeObserver.removeOnPreDrawListener(this)
 
                         // If the content sheet is expanded set the background and status bar properties
-                        if (bottomSheet.height == touchOutsideView.height) {
+                        if (sheetContainer.height == touchOutsideView.height) {
                             setStatusBarColor(0f)
 
                             if (propertyAnimateCornerRadius) {
-                                setBackgroundShapeRadius(0f)
+                                sheetContainer.setCornerRadius(0f)
                             }
                         }
                     }
@@ -195,6 +189,11 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                if (propertyAnimateCornerRadius) {
+                    val radius = propertyCornerRadius - (propertyCornerRadius * slideOffset)
+                    sheetContainer.setCornerRadius(radius)
+                }
+
                 if (!canSetStatusBarColor) {
                     return
                 }
@@ -211,11 +210,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
                 val invertOffset = 1 - (1 * slideOffset)
                 setStatusBarColor(invertOffset)
-
-                if (propertyAnimateCornerRadius) {
-                    val radius = propertyCornerRadius - (propertyCornerRadius * slideOffset)
-                    setBackgroundShapeRadius(radius)
-                }
             }
         })
     }
@@ -233,30 +227,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         dialog.window!!.statusBarColor = color
-    }
-
-    //endregion
-
-    //region BACKGROUND
-
-    private fun initBackgroundShape() {
-        backgroundShape = SheetRoundRectShape(propertyCornerRadius)
-        backgroundDrawable = ShapeDrawable(backgroundShape)
-
-        backgroundDrawable.paint.run {
-            color = getBackgroundColor()
-            style = Paint.Style.FILL
-            isAntiAlias = true
-            flags = Paint.ANTI_ALIAS_FLAG
-        }
-
-        bottomSheet.setCornerRadius(propertyCornerRadius)
-    }
-
-    private fun setBackgroundShapeRadius(radius: Float) {
-        backgroundShape.setRadius(radius)
-        backgroundDrawable.shape = backgroundShape
-        bottomSheet.setCornerRadius(radius)
     }
 
     //endregion
