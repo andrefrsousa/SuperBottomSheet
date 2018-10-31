@@ -30,7 +30,7 @@ Add the dependency:
 
 ```groovy 
 dependencies {
-    implementation 'com.github.andrefrsousa:SuperBottomSheet:1.2.1'
+    implementation 'com.github.andrefrsousa:SuperBottomSheet:1.2.3'
 }
 ```  
   
