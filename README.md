@@ -30,7 +30,7 @@ Add the dependency:
 
 ```groovy 
 dependencies {
-    implementation 'com.github.andrefrsousa:SuperBottomSheet:1.2.3'
+    implementation 'com.github.andrefrsousa:SuperBottomSheet:1.3.0'
 }
 ```  
   
@@ -71,8 +71,11 @@ The are a group of general properties that you can define. These properties will
 // To corner radius to be applied. 0 if you want none.
 <attr name="superBottomSheet_cornerRadius" format="dimension"/>  
 
+// Enable or disable the status bar animation. Default is true.
+<attr name="superBottomSheet_animateStatusBar" format="boolean"/>
+
 // Enable or disable the radius animation. Default is true.
-<attr name="superBottomSheet_animateCornerRadius" format="float"/>
+<attr name="superBottomSheet_animateCornerRadius" format="boolean"/>
 
 // Default if false. Enalbe it if you want to skip collapse state
 <attr name="superBottomSheet_alwaysExpanded" format="boolean"/>
@@ -126,6 +129,10 @@ fun isSheetCancelable(): Boolean {
 }
 
 fun animateCornerRadius(): Boolean {
+    // Your code goes here
+}
+
+fun animateStatusBar(): Boolean {
     // Your code goes here
 }
 
