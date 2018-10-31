@@ -52,7 +52,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     private var propertyIsAlwaysExpanded = false
     private var propertyIsSheetCancelableOnTouchOutside = true
     private var propertyIsSheetCancelable = true
-    private var propertyAnimateStatusBar = true
     private var propertyAnimateCornerRadius = true
 
     // Bottom sheet properties
@@ -61,7 +60,11 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     /** Methods from [BottomSheetDialogFragment]  */
 
     final override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return SuperBottomSheetDialog(this.context!!, R.style.superBottomSheetDialog)
+        if (animateStatusBar()) {
+            return SuperBottomSheetDialog(this.context!!, R.style.superBottomSheetDialog)
+        }
+
+        return SuperBottomSheetDialog(this.context!!)
     }
 
     @CallSuper
@@ -78,7 +81,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         propertyIsAlwaysExpanded = isSheetAlwaysExpanded()
         propertyIsSheetCancelable = isSheetCancelable()
         propertyIsSheetCancelableOnTouchOutside = isSheetCancelableOnTouchOutside()
-        propertyAnimateStatusBar = animateStatusBar()
         propertyAnimateCornerRadius = animateCornerRadius()
 
         // Set dialog properties
@@ -227,12 +229,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             return
         }
 
-        val color = if (!propertyAnimateStatusBar) {
-            calculateColor(propertyStatusBarColor, 0f)
-        } else {
-            calculateColor(propertyStatusBarColor, dim)
-        }
-
+        val color = calculateColor(propertyStatusBarColor, dim)
         dialog.window!!.statusBarColor = color
     }
 
