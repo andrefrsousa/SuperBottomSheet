@@ -29,7 +29,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.CallSuper
@@ -44,7 +43,8 @@ import android.view.*
 
 abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private lateinit var backgroundShape: ShapeDrawable
+    private lateinit var backgroundDrawable: ShapeDrawable
+    private lateinit var backgroundShape: SheetRoundRectShape
     private lateinit var bottomSheet: CornerRadiusFrameLayout
     private lateinit var behavior: BottomSheetBehavior<*>
 
@@ -58,7 +58,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     private var propertyAnimateCornerRadius = true
 
     // Bottom sheet properties
-    private var backgroundOuterRadii = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
     private var canSetStatusBarColor = false
 
     /** Methods from [BottomSheetDialogFragment]  */
@@ -134,7 +133,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         behavior = BottomSheetBehavior.from(bottomSheet)
 
         // Set background shape
-        bottomSheet.setBackgroundCompat(backgroundShape)
+        bottomSheet.setBackgroundCompat(backgroundDrawable)
 
         // Set tablet sheet width when in landscape. This will avoid full bleed sheet
         if (context.isTablet() && !context.isInPortrait()) {
@@ -241,9 +240,10 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     //region BACKGROUND
 
     private fun initBackgroundShape() {
-        backgroundShape = ShapeDrawable(getShape(propertyCornerRadius))
+        backgroundShape = SheetRoundRectShape(propertyCornerRadius)
+        backgroundDrawable = ShapeDrawable(backgroundShape)
 
-        backgroundShape.paint.run {
+        backgroundDrawable.paint.run {
             color = getBackgroundColor()
             style = Paint.Style.FILL
             isAntiAlias = true
@@ -254,20 +254,9 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setBackgroundShapeRadius(radius: Float) {
-        backgroundShape.shape = getShape(radius)
+        backgroundShape.setRadius(radius)
+        backgroundDrawable.shape = backgroundShape
         bottomSheet.setCornerRadius(radius)
-    }
-
-    private fun getShape(radius: Float): RoundRectShape {
-        // Top left corner
-        backgroundOuterRadii[0] = radius
-        backgroundOuterRadii[1] = radius
-
-        // Top right corner
-        backgroundOuterRadii[2] = radius
-        backgroundOuterRadii[3] = radius
-
-        return RoundRectShape(backgroundOuterRadii, null, null)
     }
 
     //endregion

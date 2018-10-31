@@ -23,20 +23,15 @@
  */
 package com.andrefrsousa.superbottomsheet
 
-import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Outline
+import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.RectF
-import android.util.AttributeSet
-import android.widget.FrameLayout
+import android.graphics.drawable.shapes.RectShape
 
-internal class CornerRadiusFrameLayout : FrameLayout {
+internal class SheetRoundRectShape(radius: Float) : RectShape() {
 
-    // Variables
-    private var noCornerRadius = true
-    private val path = Path()
-    private val rect = RectF()
-    private val outerRadii = floatArrayOf(
+    private var outerRadii = floatArrayOf(
             // Top left corner
             0f, 0f,
             // Top right corner
@@ -47,33 +42,9 @@ internal class CornerRadiusFrameLayout : FrameLayout {
             0f, 0f
     )
 
-    // Constructor
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    private val path: Path
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-
-        rect.set(0f, 0f, w.toFloat(), h.toFloat())
-        resetPath()
-    }
-
-    override fun dispatchDraw(canvas: Canvas) = when {
-        noCornerRadius -> super.dispatchDraw(canvas)
-
-        else -> with(canvas) {
-            val save = save()
-            clipPath(path)
-
-            super.dispatchDraw(this)
-            restoreToCount(save)
-        }
-    }
-
-    //region PUBLIC METHODS
-
-    internal fun setCornerRadius(radius: Float) {
+    init {
         // Top left corner
         outerRadii[0] = radius
         outerRadii[1] = radius
@@ -82,25 +53,58 @@ internal class CornerRadiusFrameLayout : FrameLayout {
         outerRadii[2] = radius
         outerRadii[3] = radius
 
-        if (width == 0 || height == 0) {
-            // Discard invalid events
-            return
+        // init path
+        path = Path()
+    }
+
+    internal fun setRadius(radius: Float) {
+        // Top left corner
+        outerRadii[0] = radius
+        outerRadii[1] = radius
+
+        // Top right corner
+        outerRadii[2] = radius
+        outerRadii[3] = radius
+
+        // Reset the current path
+        path.run {
+            reset()
+            addRoundRect(rect(), outerRadii, Path.Direction.CW)
+            close()
+        }
+    }
+
+    override fun draw(canvas: Canvas, paint: Paint) = canvas.drawPath(path, paint)
+
+    override fun getOutline(outline: Outline) {
+        val radius = outerRadii[0]
+
+        for (i in 1..7) {
+            if (outerRadii[i] != radius) {
+                // can't call simple constructors, use path
+                outline.setConvexPath(path)
+                return
+            }
         }
 
-        noCornerRadius = radius == 0f
-        resetPath()
-        invalidate()
+        val rect = rect()
+
+        outline.setRoundRect(
+                Math.ceil(rect.left.toDouble()).toInt(),
+                Math.ceil(rect.top.toDouble()).toInt(),
+                Math.floor(rect.right.toDouble()).toInt(),
+                Math.floor(rect.bottom.toDouble()).toInt(),
+                radius
+        )
     }
 
-    //endregion
+    override fun onResize(w: Float, h: Float) {
+        super.onResize(w, h)
 
-    //region PRIVATE METHODS
-
-    private fun resetPath() = path.run {
-        reset()
-        addRoundRect(rect, outerRadii, Path.Direction.CW)
-        close()
+        path.run {
+            reset()
+            addRoundRect(rect(), outerRadii, Path.Direction.CW)
+            close()
+        }
     }
-
-    //endregion
 }
