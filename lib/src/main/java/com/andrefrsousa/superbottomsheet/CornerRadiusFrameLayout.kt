@@ -33,6 +33,7 @@ import android.widget.FrameLayout
 internal class CornerRadiusFrameLayout : FrameLayout {
 
     // Variables
+    private var noCornerRadius = true
     private val path = Path()
     private val rect = RectF()
     private val backgroundOuterRadii = floatArrayOf(
@@ -59,7 +60,7 @@ internal class CornerRadiusFrameLayout : FrameLayout {
     }
 
     override fun dispatchDraw(canvas: Canvas) = when {
-        path.isEmpty -> super.dispatchDraw(canvas)
+        noCornerRadius -> super.dispatchDraw(canvas)
 
         else -> with(canvas) {
             val save = save()
@@ -86,6 +87,7 @@ internal class CornerRadiusFrameLayout : FrameLayout {
             return
         }
 
+        noCornerRadius = radius == 0f
         resetPath()
         invalidate()
     }
