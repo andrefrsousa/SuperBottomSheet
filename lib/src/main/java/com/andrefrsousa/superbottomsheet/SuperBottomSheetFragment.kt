@@ -29,15 +29,15 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.annotation.ColorInt
-import android.support.annotation.Dimension
-import android.support.annotation.UiThread
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetDialogFragment
-import android.support.v4.content.ContextCompat
 import android.util.TypedValue
 import android.view.*
+import androidx.annotation.CallSuper
+import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
+import androidx.annotation.UiThread
+import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -84,27 +84,26 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         propertyAnimateCornerRadius = animateCornerRadius()
 
         // Set dialog properties
-        dialog.run {
+        dialog.runIfNotNull {
             setCancelable(propertyIsSheetCancelable)
 
             val isCancelableOnTouchOutside = propertyIsSheetCancelable && propertyIsSheetCancelableOnTouchOutside
             setCanceledOnTouchOutside(isCancelableOnTouchOutside)
-        }
 
-        // Set window properties
-        dialog.window.runIfNotNull {
-            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            setDimAmount(propertyDim)
+            window.runIfNotNull {
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                setDimAmount(propertyDim)
 
-            if (supportsStatusBarColor) {
-                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                setStatusBarColor(1f)
-            }
+                if (supportsStatusBarColor) {
+                    addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    setStatusBarColor(1f)
+                }
 
-            if (context.isTablet() && !context.isInPortrait()) {
-                setGravity(Gravity.CENTER_HORIZONTAL)
-                setLayout(resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_width), ViewGroup.LayoutParams.WRAP_CONTENT)
+                if (context.isTablet() && !context.isInPortrait()) {
+                    setGravity(Gravity.CENTER_HORIZONTAL)
+                    setLayout(resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_width), ViewGroup.LayoutParams.WRAP_CONTENT)
+                }
             }
         }
 
@@ -124,8 +123,8 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     @UiThread
     private fun iniBottomSheetUiComponents() {
         // Store views references
-        sheetContainer = dialog.findViewById(R.id.super_bottom_sheet)
-        sheetTouchOutsideContainer = dialog.findViewById(R.id.touch_outside)
+        sheetContainer = dialog?.findViewById(R.id.super_bottom_sheet)!!
+        sheetTouchOutsideContainer = dialog?.findViewById(R.id.touch_outside)!!
 
         // Set the bottom sheet radius
         sheetContainer.setBackgroundColor(getBackgroundColor())
@@ -189,7 +188,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     setStatusBarColor(1f)
-                    dialog.cancel()
+                    dialog?.cancel()
                 }
             }
 
@@ -230,7 +229,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         val color = calculateColor(propertyStatusBarColor, dim)
-        dialog.window!!.statusBarColor = color
+        dialog?.window!!.statusBarColor = color
     }
 
     //endregion

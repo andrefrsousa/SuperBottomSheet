@@ -25,10 +25,10 @@ package com.andrefrsousa.superbottomsheet.demo
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.andrefrsousa.superbottomsheet.SuperBottomSheetFragment
 import kotlinx.android.synthetic.main.activity_main.*
 

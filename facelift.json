@@ -1,27 +1,27 @@
 {
-    "title": "SuperBottomSheet",
-    "subtitle": "Android native BottomSheet on steroids 💪",
-    "installation": "implementation 'com.github.andrefrsousa:SuperBottomSheet:{latest_version}'",
-    "url": "https://github.com/andrefrsousa/SuperBottomSheet",
-    "screenshot": "https://github.com/andrefrsousa/SuperBottomSheet/blob/master/raw/example.gif",
-    "author": {
-        "name": "André Sousa",
-        "thumbnail": "https://andrefrsousa.github.io/images/me.png",
-        "homepage": "https://andrefrsousa.github.io"
+  "title": "SuperBottomSheet",
+  "subtitle": "Android native BottomSheet on steroids 💪",
+  "installation": "implementation 'com.github.andrefrsousa:SuperBottomSheet:{latest_version}'",
+  "url": "https://github.com/andrefrsousa/SuperBottomSheet",
+  "screenshot": "https://github.com/andrefrsousa/SuperBottomSheet/blob/master/raw/example.gif",
+  "author": {
+    "name": "André Sousa",
+    "thumbnail": "https://andrefrsousa.github.io/images/me.png",
+    "homepage": "https://andrefrsousa.github.io"
+  },
+  "highlights": [
+    {
+      "title": "Features",
+      "items": [
+        "Animate status bar color when scrolling",
+        "Animate top rounded corners"
+      ]
     },
-    "highlights": [
-        {
-            "title": "Features",
-            "items": [
-                "Animate status bar color when scrolling",
-                "Animate top rounded corners"
-            ]
-        },
-        {
-            "title": "Links",
-            "items": [
-                "GitHub: <a href='https://github.com/andrefrsousa/SuperBottomSheet'>https://github.com/andrefrsousa/SuperBottomSheet</a>"
-            ]
-        }
-    ]
+    {
+      "title": "Links",
+      "items": [
+        "GitHub: <a href='https://github.com/andrefrsousa/SuperBottomSheet'>https://github.com/andrefrsousa/SuperBottomSheet</a>"
+      ]
+    }
+  ]
 }

@@ -48,7 +48,8 @@ internal fun View.setBackgroundCompat(drawable: Drawable) = when {
 
 //region CONTEXT
 
-internal fun Context?.isTablet() = this?.resources?.getBoolean(R.bool.super_bottom_sheet_isTablet) ?: false
+internal fun Context?.isTablet() = this?.resources?.getBoolean(R.bool.super_bottom_sheet_isTablet)
+        ?: false
 
 internal fun Context?.isInPortrait() = this?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
 

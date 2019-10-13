@@ -25,7 +25,7 @@ package com.andrefrsousa.superbottomsheet
 
 import android.graphics.Color
 import android.os.Build
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 internal fun hasMinimumSdk(minimumSdk: Int) = Build.VERSION.SDK_INT >= minimumSdk
 
