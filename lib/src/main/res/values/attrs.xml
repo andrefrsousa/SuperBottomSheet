@@ -7,6 +7,7 @@
     <attr name="superBottomSheet_animateCornerRadius" format="boolean" />
     <attr name="superBottomSheet_animateStatusBar" format="boolean" />
     <attr name="superBottomSheet_alwaysExpanded" format="boolean" />
+    <attr name="superBottomSheet_ExpandBehavior" format="integer" />
     <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean" />
     <attr name="superBottomSheet_cancelable" format="boolean" />
     <attr name="superBottomSheet_statusBarColor" format="color" />

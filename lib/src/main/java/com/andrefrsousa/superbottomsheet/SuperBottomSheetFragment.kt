@@ -148,9 +148,10 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             sheetContainer.run {
                 minimumHeight = behavior.peekHeight
             }
+
         } else {
             val layoutParams = sheetContainer.layoutParams
-            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            layoutParams.height = getExpandBehavior()
             sheetContainer.layoutParams = layoutParams
         }
 
@@ -264,6 +265,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
     @Dimension
     open fun getPeekHeight(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_peekHeight)) {
+
         val peekHeightMin = when (this) {
             INVALID_RESOURCE_ID -> resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
             else -> resources.getDimensionPixelSize(this)
@@ -286,6 +288,19 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             else -> TypedValue().let {
                 resources.getValue(this, it, true)
                 it.float
+            }
+        }
+    }
+
+
+    open fun getExpandBehavior(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_ExpandBehavior)) {
+
+        return when (this) {
+            INVALID_RESOURCE_ID -> -1
+
+            else -> TypedValue().let {
+                resources.getValue(this, it, true)
+                it.float.toInt()
             }
         }
     }
