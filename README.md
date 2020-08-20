@@ -80,6 +80,9 @@ The are a group of general properties that you can define. These properties will
 // Default if false. Enalbe it if you want to skip collapse state
 <attr name="superBottomSheet_alwaysExpanded" format="boolean"/>
 
+// Default if -1 for MATCH_PARENT , -2 if you want change behavior to WRAP_CONTENT.
+<attr name="superBottomSheet_ExpandBehavior" format="integer" />
+
 // Default if true
 <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean"/>
 
@@ -117,6 +120,10 @@ fun getCornerRadius(): Float {
 }
 
 fun isSheetAlwaysExpanded(): Boolean {
+    // Your code goes here
+}
+
+fun getExpandBehavior(): Boolean {
     // Your code goes here
 }
 
