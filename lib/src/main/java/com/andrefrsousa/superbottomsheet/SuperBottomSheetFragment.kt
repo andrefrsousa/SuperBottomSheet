@@ -31,6 +31,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
+import android.view.ViewTreeObserver.OnPreDrawListener
 import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
@@ -44,6 +45,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var sheetTouchOutsideContainer: View
     private lateinit var sheetContainer: CornerRadiusFrameLayout
     private lateinit var behavior: BottomSheetBehavior<*>
+    private lateinit var callback:  BottomSheetBehavior.BottomSheetCallback
 
     // Customizable properties
     private var propertyDim = 0f
@@ -96,7 +98,6 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
                 if (supportsStatusBarColor) {
                     addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     setStatusBarColor(1f)
                 }
 
@@ -118,6 +119,16 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         iniBottomSheetUiComponents()
     }
 
+    override fun onResume() {
+        super.onResume()
+        behavior.addBottomSheetCallback(callback)
+    }
+
+    override fun onPause() {
+        behavior.removeBottomSheetCallback(callback)
+        super.onPause()
+    }
+
     //region UI METHODS
 
     @UiThread
@@ -135,23 +146,48 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
         // Set tablet sheet width when in landscape. This will avoid full bleed sheet
         if (context.isTablet() && !context.isInPortrait()) {
-            val layoutParams = sheetContainer.layoutParams
-            layoutParams.width = resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_width)
-            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            sheetContainer.layoutParams = layoutParams
+            sheetContainer.layoutParams = sheetContainer.layoutParams.apply {
+                width = resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_width)
+                height = ViewGroup.LayoutParams.WRAP_CONTENT
+            }
         }
 
         // If is always expanded, there is no need to set the peek height
-        if (!propertyIsAlwaysExpanded) {
-            behavior.peekHeight = getPeekHeight()
-
-            sheetContainer.run {
-                minimumHeight = behavior.peekHeight
+        if (propertyIsAlwaysExpanded) {
+            sheetContainer.layoutParams = sheetContainer.layoutParams.apply {
+                height = ViewGroup.LayoutParams.MATCH_PARENT
             }
+
         } else {
-            val layoutParams = sheetContainer.layoutParams
-            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-            sheetContainer.layoutParams = layoutParams
+            val peekHeight = getPeekHeight()
+
+            when(getPeekHeight()) {
+                ViewGroup.MarginLayoutParams.WRAP_CONTENT -> {
+                    // Load content container height
+                    sheetContainer.viewTreeObserver.addOnPreDrawListener(object : OnPreDrawListener {
+                        override fun onPreDraw(): Boolean {
+                            if (sheetContainer.height > 0) {
+                                sheetContainer.viewTreeObserver.removeOnPreDrawListener(this)
+
+                                behavior.peekHeight = sheetContainer.height
+                                sheetContainer.minimumHeight = behavior.peekHeight
+                            }
+
+                            return true
+                        }
+                    })
+                }
+
+                ViewGroup.MarginLayoutParams.MATCH_PARENT -> {
+                    behavior.peekHeight = context!!.resources.displayMetrics.heightPixels
+                    sheetContainer.minimumHeight = behavior.peekHeight
+                }
+
+                else -> {
+                    behavior.peekHeight = peekHeight
+                    sheetContainer.minimumHeight = behavior.peekHeight
+                }
+            }
         }
 
         // Only skip the collapse state when the device is in landscape or the sheet is always expanded
@@ -163,7 +199,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
             setStatusBarColor(1f)
 
             // Load content container height
-            sheetContainer.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            sheetContainer.viewTreeObserver.addOnPreDrawListener(object : OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     if (sheetContainer.height > 0) {
                         sheetContainer.viewTreeObserver.removeOnPreDrawListener(this)
@@ -184,7 +220,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         // Override sheet callback events
-        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        callback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     setStatusBarColor(1f)
@@ -196,7 +232,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                 setRoundedCornersOnScroll(bottomSheet, slideOffset)
                 setStatusBarColorOnScroll(bottomSheet, slideOffset)
             }
-        })
+        }
     }
 
     //region STATUS BAR
@@ -262,16 +298,25 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
     //region PUBLIC
 
-    @Dimension
-    open fun getPeekHeight(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_peekHeight)) {
-        val peekHeightMin = when (this) {
-            INVALID_RESOURCE_ID -> resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
-            else -> resources.getDimensionPixelSize(this)
-        }
+    open fun getPeekHeight(): Int {
+        val value = TypedValue()
+        context!!.theme.resolveAttribute(R.attr.superBottomSheet_peekHeight, value, true)
 
-        // 16:9 ratio
-        return with(resources.displayMetrics) {
-            Math.max(peekHeightMin, heightPixels - heightPixels * 9 / 16)
+        return when (value.data) {
+            ViewGroup.MarginLayoutParams.WRAP_CONTENT,
+            ViewGroup.MarginLayoutParams.MATCH_PARENT -> value.data
+
+            else -> {
+                val peekHeightMin = when (val attrId = context!!.getAttrId(R.attr.superBottomSheet_peekHeight)) {
+                    INVALID_RESOURCE_ID -> resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
+                    else -> resources.getDimensionPixelSize(attrId)
+                }
+
+                // 16:9 ratio
+                return with(resources.displayMetrics) {
+                    Math.max(peekHeightMin, heightPixels - heightPixels * 9 / 16)
+                }
+            }
         }
     }
 

@@ -10,6 +10,9 @@
     <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean" />
     <attr name="superBottomSheet_cancelable" format="boolean" />
     <attr name="superBottomSheet_statusBarColor" format="color" />
-    <attr name="superBottomSheet_peekHeight" format="dimension" />
+    <attr name="superBottomSheet_peekHeight" format="dimension">
+        <enum name="match_parent" value="-1" />
+        <enum name="wrap_content" value="-2" />
+    </attr>
 
 </resources>

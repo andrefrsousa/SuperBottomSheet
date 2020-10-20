@@ -25,24 +25,11 @@ package com.andrefrsousa.superbottomsheet
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.TypedValue
-import android.view.View
 
 //region NULL
 
 internal inline fun <T, R> T?.runIfNotNull(block: T.() -> R): R? = this?.block()
-
-//endregion
-
-//region VIEW
-
-@Suppress("DEPRECATION")
-internal fun View.setBackgroundCompat(drawable: Drawable) = when {
-    hasMinimumSdk(Build.VERSION_CODES.JELLY_BEAN) -> background = drawable
-    else -> setBackgroundDrawable(drawable)
-}
 
 //endregion
 
