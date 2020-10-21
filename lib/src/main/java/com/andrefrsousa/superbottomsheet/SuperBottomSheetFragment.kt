@@ -262,21 +262,25 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
     //region PUBLIC
 
-    open fun getPeekHeight(): Int {
-        val peekHeightMin = when (val attrId = context!!.getAttrId(R.attr.superBottomSheet_peekHeight)) {
+    open fun getPeekHeight() = with(context!!.getAttrId(R.attr.superBottomSheet_dim)) {
+        when (this) {
             INVALID_RESOURCE_ID -> resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
-            else -> resources.getDimensionPixelSize(attrId)
-        }
 
-        // 16:9 ratio
-        return with(resources.displayMetrics) {
-            peekHeightMin.coerceAtLeast(heightPixels - heightPixels * 9 / 16)
+            else -> {
+                val peekHeightMin = resources.getDimensionPixelSize(this)
+
+                // 16:9 ratio
+                with(resources.displayMetrics) {
+                    peekHeightMin.coerceAtLeast(heightPixels - heightPixels * 9 / 16)
+                }
+            }
+
         }
     }
 
     @Dimension
-    open fun getDim(): Float = with(context!!.getAttrId(R.attr.superBottomSheet_dim)) {
-        return when (this) {
+    open fun getDim() = with(context!!.getAttrId(R.attr.superBottomSheet_dim)) {
+        when (this) {
             INVALID_RESOURCE_ID -> TypedValue().let {
                 resources.getValue(R.dimen.super_bottom_sheet_dim, it, true)
                 it.float
@@ -290,16 +294,16 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     @ColorInt
-    open fun getBackgroundColor(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_backgroundColor)) {
-        return when (this) {
+    open fun getBackgroundColor() = with(context!!.getAttrId(R.attr.superBottomSheet_backgroundColor)) {
+        when (this) {
             INVALID_RESOURCE_ID -> Color.WHITE
             else -> ContextCompat.getColor(context!!, this)
         }
     }
 
     @ColorInt
-    open fun getStatusBarColor(): Int = with(context!!.getAttrId(R.attr.superBottomSheet_statusBarColor)) {
-        return when (this) {
+    open fun getStatusBarColor() = with(context!!.getAttrId(R.attr.superBottomSheet_statusBarColor)) {
+        when (this) {
             INVALID_RESOURCE_ID -> ContextCompat.getColor(context!!, context!!.getAttrId(R.attr.colorPrimaryDark))
             else -> ContextCompat.getColor(context!!, this)
         }
@@ -334,10 +338,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    @IntRange(
-            from = ViewGroup.LayoutParams.WRAP_CONTENT.toLong(),
-            to = ViewGroup.LayoutParams.MATCH_PARENT.toLong(),
-    )
+    @IntRange(from = ViewGroup.LayoutParams.WRAP_CONTENT.toLong(), to = ViewGroup.LayoutParams.MATCH_PARENT.toLong())
     open fun getExpandedBehaviour() = with(context!!.getAttrId(R.attr.superBottomSheet_expandedBehaviour)) {
         when (this) {
             INVALID_RESOURCE_ID -> context!!.resources.getInteger(R.integer.super_bottom_expanded_behaviour)
