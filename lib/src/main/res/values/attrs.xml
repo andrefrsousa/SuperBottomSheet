@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- STYLE ATTRIBUTES -->
     <attr name="superBottomSheet_dim" format="float" />
     <attr name="superBottomSheet_backgroundColor" format="color" />
     <attr name="superBottomSheet_cornerRadius" format="dimension" />
+    <attr name="superBottomSheet_statusBarColor" format="color" />
+    <attr name="superBottomSheet_peekHeight" format="dimension" />
+
+    <!-- UX ATTRIBUTES -->
     <attr name="superBottomSheet_animateCornerRadius" format="boolean" />
     <attr name="superBottomSheet_animateStatusBar" format="boolean" />
     <attr name="superBottomSheet_alwaysExpanded" format="boolean" />
     <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean" />
     <attr name="superBottomSheet_cancelable" format="boolean" />
-    <attr name="superBottomSheet_statusBarColor" format="color" />
-    <attr name="superBottomSheet_peekHeight" format="dimension">
+    <attr name="superBottomSheet_expandedBehaviour" format="enum">
         <enum name="match_parent" value="-1" />
         <enum name="wrap_content" value="-2" />
     </attr>

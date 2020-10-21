@@ -35,21 +35,34 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import com.andrefrsousa.superbottomsheet.databinding.SuperBottomSheetDialogBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetBehavior.State
 
 internal class SuperBottomSheetDialog : AppCompatDialog {
 
+    private lateinit var binding: SuperBottomSheetDialogBinding
     private lateinit var behavior: BottomSheetBehavior<FrameLayout>
 
-    private var mCancelable = true
-    private var mCanceledOnTouchOutside = true
-    private var mCanceledOnTouchOutsideSet: Boolean = false
+    internal var cancelable = true
+    private var canceledOnTouchOutside = true
+    private var canceledOnTouchOutsideSet = false
+
+    private val bottomSheetCallback = object : BottomSheetCallback() {
+        override fun onStateChanged(bottomSheet: View, @State newState: Int) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) cancel()
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            // Do nothing.
+        }
+    }
+
+    // region Constructor
 
     @Suppress("unused")
     constructor(context: Context?) : this(context, 0)
@@ -63,15 +76,18 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
     @Suppress("unused")
     constructor(context: Context?, cancelable: Boolean, cancelListener: OnCancelListener?) : super(context, cancelable, cancelListener) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
-        mCancelable = cancelable
+        this.cancelable = cancelable
     }
+
+    // endregion
+
+    // region Methods from AppCompatDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         window.runIfNotNull {
             if (hasMinimumSdk(Build.VERSION_CODES.LOLLIPOP)) {
-                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                 addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             }
 
@@ -88,8 +104,8 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
     override fun setCancelable(cancelable: Boolean) {
         super.setCancelable(cancelable)
 
-        if (mCancelable != cancelable) {
-            mCancelable = cancelable
+        if (this.cancelable != cancelable) {
+            this.cancelable = cancelable
 
             if (::behavior.isInitialized) {
                 behavior.isHideable = cancelable
@@ -102,58 +118,60 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
 
         if (::behavior.isInitialized) {
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            behavior.addBottomSheetCallback(bottomSheetCallback)
         }
+    }
+
+    override fun onStop() {
+        behavior.removeBottomSheetCallback(bottomSheetCallback)
+        super.onStop()
     }
 
     override fun setCanceledOnTouchOutside(cancel: Boolean) {
         super.setCanceledOnTouchOutside(cancel)
 
-        if (cancel && !mCancelable) {
-            mCancelable = true
-        }
-
-        mCanceledOnTouchOutside = cancel
-        mCanceledOnTouchOutsideSet = true
+        if (cancel && !cancelable) cancelable = true
+        canceledOnTouchOutside = cancel
+        canceledOnTouchOutsideSet = true
     }
+
+    // endregion
+
+    // region Private methods
 
     @SuppressLint("ClickableViewAccessibility")
     private fun wrapInBottomSheet(layoutResId: Int, view: View?, params: ViewGroup.LayoutParams?): View {
         var supportView = view
 
-        val container = View.inflate(context, R.layout.super_bottom_sheet_dialog, null)
-        val coordinator = container.findViewById<CoordinatorLayout>(R.id.coordinator)
+        binding = SuperBottomSheetDialogBinding.inflate(layoutInflater)
 
         if (layoutResId != 0 && supportView == null) {
-            supportView = layoutInflater.inflate(layoutResId, coordinator, false)
+            supportView = layoutInflater.inflate(layoutResId, binding.coordinator, false)
         }
 
-        val bottomSheet = coordinator.findViewById<FrameLayout>(R.id.super_bottom_sheet)
-        behavior = BottomSheetBehavior.from(bottomSheet)
-        behavior.setBottomSheetCallback(mBottomSheetCallback)
-        behavior.isHideable = mCancelable
+        behavior = BottomSheetBehavior.from(binding.superBottomSheet)
+        behavior.isHideable = cancelable
 
         if (params == null) {
-            bottomSheet.addView(supportView)
+            binding.superBottomSheet.addView(supportView)
 
-        } else {
-            bottomSheet.addView(supportView, params)
-        }
+        } else binding.superBottomSheet.addView(supportView, params)
 
         // We treat the CoordinatorLayout as outside the dialog though it is technically inside
-        coordinator.findViewById<View>(R.id.touch_outside).setOnClickListener {
-            if (mCancelable && isShowing && shouldWindowCloseOnTouchOutside()) {
+        binding.touchOutside.setOnClickListener {
+            if (cancelable && isShowing && shouldWindowCloseOnTouchOutside()) {
                 cancel()
             }
         }
 
         // Handle accessibility events
-        ViewCompat.setAccessibilityDelegate(bottomSheet, object : AccessibilityDelegateCompat() {
+        ViewCompat.setAccessibilityDelegate(binding.superBottomSheet, object : AccessibilityDelegateCompat() {
 
             override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
                 super.onInitializeAccessibilityNodeInfo(host, info)
 
                 when {
-                    mCancelable -> {
+                    cancelable -> {
                         info.addAction(AccessibilityNodeInfoCompat.ACTION_DISMISS)
                         info.isDismissable = true
                     }
@@ -163,7 +181,7 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
             }
 
             override fun performAccessibilityAction(host: View, action: Int, args: Bundle): Boolean {
-                if (action == AccessibilityNodeInfoCompat.ACTION_DISMISS && mCancelable) {
+                if (action == AccessibilityNodeInfoCompat.ACTION_DISMISS && cancelable) {
                     cancel()
                     return true
                 }
@@ -172,37 +190,30 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
             }
         })
 
-        bottomSheet.setOnTouchListener { _, _ ->
+        binding.superBottomSheet.setOnTouchListener { _, _ ->
             // Consume the event and prevent it from falling through
             true
         }
-        return container
+
+        return binding.container
     }
 
     private fun shouldWindowCloseOnTouchOutside(): Boolean {
-        if (!mCanceledOnTouchOutsideSet) {
+        if (!canceledOnTouchOutsideSet) {
             if (hasMinimumSdk(Build.VERSION_CODES.HONEYCOMB)) {
-                mCanceledOnTouchOutside = true
+                canceledOnTouchOutside = true
 
             } else {
                 val typedArray = context.obtainStyledAttributes(intArrayOf(android.R.attr.windowCloseOnTouchOutside))
-                mCanceledOnTouchOutside = typedArray.getBoolean(0, true)
+                canceledOnTouchOutside = typedArray.getBoolean(0, true)
                 typedArray.recycle()
             }
 
-            mCanceledOnTouchOutsideSet = true
+            canceledOnTouchOutsideSet = true
         }
 
-        return mCanceledOnTouchOutside
+        return canceledOnTouchOutside
     }
 
-    private val mBottomSheetCallback = object : BottomSheetCallback() {
-        override fun onStateChanged(bottomSheet: View, @State newState: Int) {
-            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                cancel()
-            }
-        }
-
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-    }
+    // endregion
 }
