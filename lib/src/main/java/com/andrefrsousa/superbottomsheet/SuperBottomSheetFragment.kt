@@ -262,7 +262,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
 
     //region PUBLIC
 
-    open fun getPeekHeight() = with(context!!.getAttrId(R.attr.superBottomSheet_dim)) {
+    open fun getPeekHeight() = with(context!!.getAttrId(R.attr.superBottomSheet_peekHeight)) {
         when (this) {
             INVALID_RESOURCE_ID -> resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
 
