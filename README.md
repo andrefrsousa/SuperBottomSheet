@@ -9,13 +9,14 @@
 </p>
   
 ### Summary  
-This library allows you to show bottom sheets in your app with the bonus of **animating the status bar** color and the **top rounded corners** as you scroll.   
 
-It has been written **100% in Kotlin**. ❤️
+This library allows you to display the bottom sheets in your application with the bonus of **animating the color of the status bar** and the **upper rounded corners** while scrolling. 
+
+It was written **100% in Kotlin** ❤️.
   
 ## Download  
   
-This library is available in **jitpack**, so you need to add this repository to your root build.gradle at the end of repositories:
+This library is available in **jitpack**, so to use it you will need to add the above instruction to your root *build.gradle*:
    
 ```groovy  
 allprojects {
@@ -36,14 +37,14 @@ dependencies {
   
 ## Sample Project  
 
-We have a sample project in Kotlin that demonstrates the lib usage [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
+We have a sample project in Kotlin that demonstrates the use of the Lib [here] (https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
 
 ![](/raw/example.gif)
   
 ## Usage  
 
-It is recommended to check the sample project to get a complete understanding of all the features offered by the library.  
-In order to create a bottom sheet in your project you just need to extend SuperBottomSheetFragment.
+It is recommended that you review the sample project to get a full understanding of all the features offered by the library. 
+To create a bottom sheet in your project, you only need to extend *SuperBottomSheetFragment*.
 
 Example:
 
@@ -59,38 +60,44 @@ class MySheetFragment : SuperBottomSheetFragment() {
   
 ## Customization
   
-The are a group of general properties that you can define. These properties will be applied to all the SuperBottomSheet in your project.  
+This is a group of general properties that you can define. These properties are applied to the entire *SuperBottomSheet* in your project.
 
 ```xml
-// The amount of DIM that will be applied to the background from 0 to 1.
+// The set of DIM applied to the background from 0 to 1.
 <attr name="superBottomSheet_dim" format="float"/>  
 
-// Sheet background color
+// Background color of the sheet.
 <attr name="superBottomSheet_backgroundColor" format="color"/>
 
 // To corner radius to be applied. 0 if you want none.
 <attr name="superBottomSheet_cornerRadius" format="dimension"/>  
 
-// Enable or disable the status bar animation. Default is true.
+// Enable or disable the status bar animation. Default value is true.
 <attr name="superBottomSheet_animateStatusBar" format="boolean"/>
 
 // Enable or disable the radius animation. Default is true.
 <attr name="superBottomSheet_animateCornerRadius" format="boolean"/>
 
-// Default if false. Enalbe it if you want to skip collapse state
+// Enable this option if you want to skip the collapse state. Default value is false.
 <attr name="superBottomSheet_alwaysExpanded" format="boolean"/>
 
-// Default if true
+// Default is true.
 <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean"/>
 
-// Default if true
+// Default is true.
 <attr name="superBottomSheet_cancelable" format="boolean"/>
 
-// Status bar color. The default uses the colorDark attribute value.  
+//  Color of the status bar. The default uses the attribute value colorDark.
 <attr name="superBottomSheet_statusBarColor" format="color"/>  
 
-// The height of the bottom sheet when it is collapsed 
+// The height of the bottom sheet when it is collapsed.
 <attr name="superBottomSheet_peekHeight" format="dimension"/>
+
+// The height of the bottom sheet when it is expanded. Default value is match_parent (-1).
+<attr name="superBottomSheet_expandedBehaviour" format="enum">
+	<enum name="match_parent" value="-1" />
+        <enum name="wrap_content" value="-2" />
+</attr>
 ```
 
 If you want to change the properties of a single bottom sheet you can override these methods:
@@ -137,17 +144,6 @@ fun animateStatusBar(): Boolean {
 }
 
 ```
-
-## Project Maintained By
-
-### [André Sousa](https://andrefrsousa.github.io)
-
-Design-focused Engineer | Front-end Developer | Open-Source Enthusiast | Android | Husband | Foodie
-
-<a href="https://www.linkedin.com/in/andrefrsousa/"><img src="https://github.com/andrefrsousa/social-icons/blob/master/linkedin.png?raw=true" width="40" style="margin-right:8px"></a>
-<a href="https://stackoverflow.com/users/1574250/andré-sousa"><img src="https://github.com/andrefrsousa/social-icons/blob/master/stackoverflow.png?raw=true" width="40" style="margin-right:8px"></a>
-<a href="https://medium.com/andré-sousa"><img src="https://github.com/andrefrsousa/social-icons/blob/master/medium.png?raw=true" width="40" style="margin-right:8px"></a>
-<a href="https://twitter.com/andrefrsousa"><img src="https://github.com/andrefrsousa/social-icons/blob/master/twitter.png?raw=true" width="40" style="margin-right:8px"></a>
 
 ## License  
   
