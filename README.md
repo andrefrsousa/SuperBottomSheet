@@ -94,7 +94,7 @@ This is a group of general properties that you can define. These properties are 
 <attr name="superBottomSheet_peekHeight" format="dimension"/>
 
 // The height of the bottom sheet when it is expanded. Default value is match_parent (-1).
-<attr name="superBottomSheet_expandedBehaviour" format="enum">
+<attr name="superBottomSheet_expandedHeight" format="enum">
 	<enum name="match_parent" value="-1" />
         <enum name="wrap_content" value="-2" />
 </attr>
