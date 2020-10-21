@@ -30,13 +30,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.andrefrsousa.superbottomsheet.SuperBottomSheetFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_demo.*
 
-class MainActivity : AppCompatActivity() {
+class DemoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_demo)
 
         show_sheet.setOnClickListener {
             val sheet = DemoBottomSheetFragment()
