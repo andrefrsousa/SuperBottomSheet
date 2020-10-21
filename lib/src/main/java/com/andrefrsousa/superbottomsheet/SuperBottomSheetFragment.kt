@@ -263,18 +263,13 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     //region PUBLIC
 
     open fun getPeekHeight() = with(context!!.getAttrId(R.attr.superBottomSheet_peekHeight)) {
-        when (this) {
+        val peekHeightMin = when (this) {
             INVALID_RESOURCE_ID -> resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_peek_height)
+            else -> resources.getDimensionPixelSize(this)
+        }
 
-            else -> {
-                val peekHeightMin = resources.getDimensionPixelSize(this)
-
-                // 16:9 ratio
-                with(resources.displayMetrics) {
-                    peekHeightMin.coerceAtLeast(heightPixels - heightPixels * 9 / 16)
-                }
-            }
-
+        with(resources.displayMetrics) {
+            peekHeightMin.coerceAtLeast(heightPixels - heightPixels * 9 / 16)
         }
     }
 
