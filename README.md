@@ -16,7 +16,7 @@ It was written **100% in Kotlin** ❤️.
   
 ## Download  
   
-This library is available in **jitpack**, so to use it you will need to add the above instruction to your root *build.gradle*:
+This library is available in **jitpack**, so to use it you need to add the above statement to your root *build.gradle*:
    
 ```groovy  
 allprojects {
@@ -37,7 +37,7 @@ dependencies {
   
 ## Sample Project  
 
-We have a sample project in Kotlin that demonstrates the use of the Lib [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
+We have a sample project in Kotlin that demonstrates the use of the library [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
 
 ![](/raw/example.gif)
   
