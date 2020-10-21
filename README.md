@@ -41,7 +41,7 @@ We have a sample project in Kotlin that demonstrates the use of the library [her
 
 ![](/raw/example.gif)
   
-## Usage  
+## Use  
 
 It is recommended that you review the sample project to get a full understanding of all the features offered by the library. 
 To create a bottom sheet in your project, you only need to extend *SuperBottomSheetFragment*.
@@ -58,7 +58,7 @@ class MySheetFragment : SuperBottomSheetFragment() {
 }
 ```
   
-## Customization
+## Adjustments
   
 This is a group of general properties that you can define. These properties are applied to the entire *SuperBottomSheet* in your project.
 
