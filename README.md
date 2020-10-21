@@ -143,6 +143,11 @@ fun animateStatusBar(): Boolean {
     // Your code goes here
 }
 
+fun getExpandedHeight(): Int {
+    // Your code goes here
+}
+
+
 ```
 
 ## License  
