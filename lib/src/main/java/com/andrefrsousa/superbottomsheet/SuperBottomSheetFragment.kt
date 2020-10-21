@@ -145,14 +145,14 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
         if (context.isTablet() && !context.isInPortrait()) {
             sheetContainer.layoutParams = sheetContainer.layoutParams.apply {
                 width = resources.getDimensionPixelSize(R.dimen.super_bottom_sheet_width)
-                height = getExpandedBehaviour()
+                height = getExpandedHeight()
             }
         }
 
         // If is always expanded, there is no need to set the peek height
         if (propertyIsAlwaysExpanded) {
             sheetContainer.layoutParams = sheetContainer.layoutParams.apply {
-                height = getExpandedBehaviour()
+                height = getExpandedHeight()
             }
 
         } else {
@@ -334,7 +334,7 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     @IntRange(from = ViewGroup.LayoutParams.WRAP_CONTENT.toLong(), to = ViewGroup.LayoutParams.MATCH_PARENT.toLong())
-    open fun getExpandedBehaviour() = with(context!!.getAttrId(R.attr.superBottomSheet_expandedBehaviour)) {
+    open fun getExpandedHeight() = with(context!!.getAttrId(R.attr.superBottomSheet_expandedHeight)) {
         when (this) {
             INVALID_RESOURCE_ID -> context!!.resources.getInteger(R.integer.super_bottom_expanded_behaviour)
             else -> resources.getInteger(this)

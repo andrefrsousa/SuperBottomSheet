@@ -14,7 +14,7 @@
     <attr name="superBottomSheet_alwaysExpanded" format="boolean" />
     <attr name="superBottomSheet_cancelableOnTouchOutside" format="boolean" />
     <attr name="superBottomSheet_cancelable" format="boolean" />
-    <attr name="superBottomSheet_expandedBehaviour" format="enum">
+    <attr name="superBottomSheet_expandedHeight" format="enum">
         <enum name="match_parent" value="-1" />
         <enum name="wrap_content" value="-2" />
     </attr>
