@@ -37,7 +37,7 @@ dependencies {
   
 ## Sample Project  
 
-We have a sample project in Kotlin that demonstrates the use of the Lib [here] (https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
+We have a sample project in Kotlin that demonstrates the use of the Lib [here](https://github.com/andrefrsousa/SuperBottomSheet/blob/master/demo/src/main/java/com/andrefrsousa/superbottomsheet/demo/MainActivity.kt).
 
 ![](/raw/example.gif)
   
