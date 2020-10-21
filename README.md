@@ -12,7 +12,6 @@
 
 This library allows you to display the bottom sheets in your application with the bonus of **animating the color of the status bar** and the **upper rounded corners** while scrolling. 
 
-It was written **100% in Kotlin** ❤️.
   
 ## Download  
   
