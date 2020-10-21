@@ -88,6 +88,8 @@ internal class SuperBottomSheetDialog : AppCompatDialog {
 
         window.runIfNotNull {
             if (hasMinimumSdk(Build.VERSION_CODES.LOLLIPOP)) {
+                @Suppress("DEPRECATION")
+                addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                 addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             }
 

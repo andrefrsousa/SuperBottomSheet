@@ -92,6 +92,8 @@ abstract class SuperBottomSheetFragment : BottomSheetDialogFragment() {
                 setDimAmount(propertyDim)
 
                 if (supportsStatusBarColor) {
+                    @Suppress("DEPRECATION")
+                    addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     setStatusBarColor(1f)
                 }
