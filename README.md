@@ -2,10 +2,9 @@
 <h1 align="center">Super Bottom Sheet</h1>
 <p align="center">Android native bottom sheet on steroids 💪</p>
 <p align="center">
-  <a href="https://travis-ci.org/andrefrsousa/SuperBottomSheet"><img src="https://travis-ci.org/andrefrsousa/SuperBottomSheet.svg?branch=master" alt="Build Status"></a>
+  <a href="https://github.com/andrefrsousa/SuperBottomSheet/actions?query=workflow%3A%22Android+CI%22"><img src="https://img.shields.io/github/workflow/status/andrefrsousa/SuperBottomSheet/Android%20CI" alt="Build Status"></a>
   <a href="https://jitpack.io/#andrefrsousa/SuperBottomSheet"><img src="https://jitpack.io/v/andrefrsousa/SuperBottomSheet.svg" alt="jitpack"></a>
   <a href="https://android-arsenal.com/api?level=14"><img src="https://img.shields.io/badge/API-14%2B-orange.svg?style=flat" alt="api"></a>
-  <a href="https://android-arsenal.com/details/1/7259"><img src="https://img.shields.io/badge/Android%20Arsenal-SuperBottomSheet-green.svg?style=flat" alt="Android Arsenal"></a>
 </p>
   
 ### Summary  
